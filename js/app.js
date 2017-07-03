@@ -15,12 +15,15 @@ const ticTacToe = (function(){
     const h1 = document.createElement('h1');
     const button = document.createElement('a');
     const p = document.createElement('p');
-
+    let player1Score = 0;
+    let player2Score = 0;
+    let player1Winner = false;
+    let player2Winner = false;
 
 
     //create the start and end screens
     const createScreen = () => {
-        div.className ='screen';
+        div.className ='screen screen-win ';
         h1.textContent = 'Tic Tac Toe';
         button.setAttribute('href', '#');
         button.setAttribute('class', 'button');
@@ -42,26 +45,24 @@ const ticTacToe = (function(){
         button.textContent = 'Start game';
 
         button.addEventListener('click', () => {
-            const startScreen = document.getElementById('start');
-
-            startScreen.remove();
+            div.remove();
             boardScreen.style.display = 'block';
             player1.className += ' active';
+            player2.classList.remove('active');
         });
     };
     //function at end of the game showing screen and button to click to start again
-    const endGame = () => {
+    const endGame = (screenClass, text) => {
         createScreen();
         boardScreen.style.display = 'none';
 
-        div.className += ' screen-win screen-win-tie';
+        div.className += screenClass;
         div.setAttribute('id', 'finish');
-        button.textContent = 'New game';
-        p.textContent = 'Tie';
+        button.textContent = 'New Game';
+        p.textContent = text;
 
         button.addEventListener('click', () => {
-            const endScreen = document.getElementById('finish');
-            endScreen.remove();
+            div.remove();
             boardScreen.style.display = 'block';
             player1.className += ' active';
         });
@@ -76,52 +77,49 @@ const ticTacToe = (function(){
         if(player1.classList.contains('active')){
             player1.classList.remove('active');
             player2.classList.add('active');
-            squaresFilled +=1;
+            squaresFilled += 1;
+            player1Score += 1;
+            checkIfWinner();
         }else{
             player1.classList.add('active');
             player2.classList.remove('active');
-            squaresFilled +=1;
+            squaresFilled += 1;
+            player2Score += 1;
+            checkIfWinner();
         }
+        isAllFilled();
     };
 
     //set square to players x or o and call turn function to change turns
     const setSquare = (e) => {
         if(player1.classList.contains('active')){
             e.target.classList.add('box-filled-1');
-            turn();
-            isAllFilled();
         }else{
             e.target.classList.add('box-filled-2');
-            turn();
-            isAllFilled();
         }
-
+        turn();
     };
     //check to see if square is empty and if it is call setSquare function
     const isSquareEmpty = () => {
         square.addEventListener('click', function (e) {
             if(!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
                 setSquare(e);
-
             }
         });
     };
     //reset squares when starting a new game
     const resetSquares = () => {
-        for(let i = 0; i > squares.length; i++){
-            squares[i].classList.remove('box-filled-2');
+        for(let i = 0; i < squares.length; i++) {
             squares[i].classList.remove('box-filled-1');
-            console.log('squares ' +squares)
+            squares[i].classList.remove('box-filled-2');
         }
-        console.log('squares ' +square)
 
     };
     //if all squares are filled in
     const isAllFilled = () => {
         // if all filled and no winner game is tie
-        if(squaresFilled === 2){
-            endGame();
-
+        if(squaresFilled === 9){
+            endGame('screen-win-tie', 'Tie');
         }
 
     };
@@ -132,6 +130,25 @@ gameBoard.style.display = 'none';
 startGame();
 
 isSquareEmpty();
+
+const checkIfWinner = ()  => {
+    if(squares[0].classList.contains('box-filled-1') && squares[1].classList.contains('box-filled-1') && squares[2].classList.contains('box-filled-1')){
+        player1Winner = true;
+    }
+    if(player1Winner){
+        endGame('screen-win-one', 'Winner')
+    }else if(player2Winner){
+        endGame('screen-win-two', 'Winner')
+    }else if(squaresFilled === 9){
+        endGame('screen-win-tie', 'Tie')
+    }
+
+
+};
+
+
+console.log(squares[8]);
+
 
 }()); //end of main function
 
