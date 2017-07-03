@@ -8,64 +8,68 @@ const ticTacToe = (function(){
     const player2 = document.getElementById('player2');
     const square = document.getElementsByClassName("boxes")[0];
     const squares = document.getElementsByClassName("box");
+    const boardScreen = document.getElementById('board');
+
+    const div = document.createElement('div');
+    const header = document.createElement('header');
+    const h1 = document.createElement('h1');
+    const button = document.createElement('a');
+    const p = document.createElement('p');
+
+
+
+    //create the start and end screens
+    const createScreen = () => {
+        div.className ='screen';
+        h1.textContent = 'Tic Tac Toe';
+        button.setAttribute('href', '#');
+        button.setAttribute('class', 'button');
+        p.setAttribute('class', 'message');
+        document.body.appendChild(div);
+        div.appendChild(header);
+        header.appendChild(h1);
+        header.appendChild(p);
+        header.appendChild(button);
+    };
+
     let squaresFilled = 0;
     //function to start the game showing screen and button to click to start
     const startGame = () => {
+        createScreen();
+        p.remove();
+        div.className += ' screen-start';
+        div.setAttribute('id', 'start');
+        button.textContent = 'Start game';
 
-        const startBoard = document.createElement('div');
-        const startHeader = document.createElement('header');
-        const startTitle = document.createElement('h1');
-        const startButton = document.createElement('a');
-        startBoard.className ='screen screen-start';
-        startBoard.setAttribute('id', 'start');
-        startTitle.textContent= 'Tic Tac Toe';
-        startButton.setAttribute('href', '#');
-        startButton.setAttribute('class', 'button');
-        startButton.textContent = 'Start game';
-        document.body.appendChild(startBoard);
-        startBoard.appendChild(startHeader);
-        startHeader.appendChild(startTitle);
-        startHeader.appendChild(startButton);
+        button.addEventListener('click', () => {
+            const startScreen = document.getElementById('start');
 
-        startButton.addEventListener('click', () => {
-            startBoard.remove();
-            gameBoard.style.display = 'block';
+            startScreen.remove();
+            boardScreen.style.display = 'block';
             player1.className += ' active';
         });
     };
+    //function at end of the game showing screen and button to click to start again
     const endGame = () => {
-        gameBoard.style.display = 'none';
-        const endBoard = document.createElement('div');
-        const endHeader = document.createElement('header');
-        const endTitle = document.createElement('h1');
-        const endMessage = document.createElement('p');
-        const endButton = document.createElement('a');
-        endBoard.className ='screen screen-win screen-win-tie';
-        endBoard.setAttribute('id', 'finish');
-        endTitle.textContent = 'Tic Tac Toe';
-        endMessage.className ='message';
-        endMessage.textContent = 'Tie';
-        endButton.setAttribute('href', '#');
-        endButton.setAttribute('class', 'button');
-        endButton.textContent = 'New game';
-        document.body.appendChild(endBoard);
-        endBoard.appendChild(endHeader);
-        endHeader.appendChild(endTitle);
-        endHeader.appendChild(endMessage);
-        endHeader.appendChild(endButton);
+        createScreen();
+        boardScreen.style.display = 'none';
 
-        endButton.addEventListener('click', () => {
-            endBoard.remove();
-            gameBoard.style.display = 'block';
+        div.className += ' screen-win screen-win-tie';
+        div.setAttribute('id', 'finish');
+        button.textContent = 'New game';
+        p.textContent = 'Tie';
+
+        button.addEventListener('click', () => {
+            const endScreen = document.getElementById('finish');
+            endScreen.remove();
+            boardScreen.style.display = 'block';
             player1.className += ' active';
         });
         resetSquares();
 
     };
 
-    //hide board game and call start function
-    gameBoard.style.display = 'none';
-    startGame();
+
 
     //function to take turns
     const turn = () => {
@@ -123,7 +127,9 @@ const ticTacToe = (function(){
     };
 
 
-
+//hide board game and call start function
+gameBoard.style.display = 'none';
+startGame();
 
 isSquareEmpty();
 
