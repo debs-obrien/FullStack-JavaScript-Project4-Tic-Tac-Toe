@@ -9,6 +9,7 @@ const ticTacToe = (function(){
     const square = document.getElementsByClassName("boxes")[0];
     const squares = document.getElementsByClassName("box");
     const boardScreen = document.getElementById('board');
+    const wins = [7, 56, 448, 73, 146, 292, 273, 84];
 
     const div = document.createElement('div');
     const header = document.createElement('header');
@@ -78,26 +79,33 @@ const ticTacToe = (function(){
             player1.classList.remove('active');
             player2.classList.add('active');
             squaresFilled += 1;
-            player1Score += 1;
-            checkIfWinner();
         }else{
             player1.classList.add('active');
             player2.classList.remove('active');
             squaresFilled += 1;
-            player2Score += 1;
-            checkIfWinner();
         }
-        isAllFilled();
+
     };
 
     //set square to players x or o and call turn function to change turns
     const setSquare = (e) => {
+        for(let i = 0; i < squares.length; i++){
+            squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
+        }
+
         if(player1.classList.contains('active')){
             e.target.classList.add('box-filled-1');
+            player1Score += e.target.value;
+            console.log(player1Score)
         }else{
             e.target.classList.add('box-filled-2');
+            player2Score += e.target.value;
+            console.log(player2Score)
         }
+        checkIfWinner();
         turn();
+        isAllFilled();
+
     };
     //check to see if square is empty and if it is call setSquare function
     const isSquareEmpty = () => {
@@ -109,6 +117,11 @@ const ticTacToe = (function(){
     };
     //reset squares when starting a new game
     const resetSquares = () => {
+        player1Winner = false;
+        player2Winner = false;
+        player1Score = 0;
+        player2Score = 0;
+        squaresFilled = 0;
         for(let i = 0; i < squares.length; i++) {
             squares[i].classList.remove('box-filled-1');
             squares[i].classList.remove('box-filled-2');
@@ -127,27 +140,22 @@ const ticTacToe = (function(){
 
 //hide board game and call start function
 gameBoard.style.display = 'none';
-startGame();
 
-isSquareEmpty();
 
 const checkIfWinner = ()  => {
-    if(squares[0].classList.contains('box-filled-1') && squares[1].classList.contains('box-filled-1') && squares[2].classList.contains('box-filled-1')){
-        player1Winner = true;
+    for(let i = 0; i < squares.length; i++) {
+        if ((wins[i] & player1Score) === wins[i]) {
+            endGame('screen-win-one', 'Winner')
+        } else if ((wins[i] & player2Score) === wins[i]) {
+            endGame('screen-win-two', 'Winner')
+        } else if (squaresFilled === 9) {
+            endGame('screen-win-tie', 'Tie')
+        }
     }
-    if(player1Winner){
-        endGame('screen-win-one', 'Winner')
-    }else if(player2Winner){
-        endGame('screen-win-two', 'Winner')
-    }else if(squaresFilled === 9){
-        endGame('screen-win-tie', 'Tie')
-    }
-
-
 };
 
-
-console.log(squares[8]);
+    startGame();
+    isSquareEmpty();
 
 
 }()); //end of main function
