@@ -20,6 +20,7 @@ const ticTacToe = (function(){
     let squaresFilled = 0;
     let win = false;
 
+    let player1Active = true;
 
     //create the start and end screens
     const createScreen = () => {
@@ -79,12 +80,14 @@ const ticTacToe = (function(){
 
     //function to take turns
     const turn = (className) => {
-        if(player1.classList.contains(className)){
+        if(player1Active){
             removeClass(player1, className);
             addClass(player2, className);
+            player1Active = false;
         }else{
             addClass(player1, className);
             removeClass(player2, className);
+            player1Active = true;
         }
         squaresFilled += 1;
         checkIfWinner();
@@ -92,11 +95,12 @@ const ticTacToe = (function(){
 
     //set square to players x or o and call turn function to change turns
     const setSquare = (e) => {
+
         for(let i = 0; i < squares.length; i++){
             squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
         }
 
-        if(player1.classList.contains('active')){
+        if(player1Active){
             addClass(e.target, 'box-filled-1');
             player1Score += e.target.value; //adds the value of each square
             console.log(player1Score)
@@ -115,7 +119,21 @@ const ticTacToe = (function(){
                 setSquare(e);
             }
         });
+        square.addEventListener('mouseover', function (e) {
+            if(!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+                if(player1Active){
+                    e.target.style.backgroundImage = "url(img/o.svg)";
+                }else{
+                    e.target.style.backgroundImage = "url(img/x.svg)";
+                }
+            }
+
+        });
+        square.addEventListener('mouseout', function (e) {
+            e.target.style.backgroundImage = "";
+        });
     };
+
     //reset squares and scores when starting a new game
     const resetSquares = () => {
         player1Score = 0;
