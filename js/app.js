@@ -3,7 +3,6 @@
  * Created by Debbie O'Brien on 01/07/2017.
  */
 const ticTacToe = (function(){
-    const gameBoard = document.getElementById('board');
     const player1 = document.getElementById('player1');
     const player2 = document.getElementById('player2');
     const square = document.getElementsByClassName("boxes")[0];
@@ -19,6 +18,7 @@ const ticTacToe = (function(){
     let player1Score = 0;
     let player2Score = 0;
     let squaresFilled = 0;
+    let win = false;
 
 
     //create the start and end screens
@@ -70,24 +70,23 @@ const ticTacToe = (function(){
 
     };
 
-    const removeClass = (from, className) => {
+    function removeClass(from, className) {
         from.classList.remove(className);
-    };
-    const addClass = (from, className) => {
+    }
+    function addClass(from, className){
         from.classList.add(className);
-    };
+    }
 
     //function to take turns
     const turn = (className) => {
         if(player1.classList.contains(className)){
             removeClass(player1, className);
             addClass(player2, className);
-            squaresFilled += 1;
         }else{
             addClass(player1, className);
             removeClass(player2, className);
-            squaresFilled += 1;
         }
+        squaresFilled += 1;
         checkIfWinner();
     };
 
@@ -98,11 +97,11 @@ const ticTacToe = (function(){
         }
 
         if(player1.classList.contains('active')){
-            e.target.classList.add('box-filled-1');
+            addClass(e.target, 'box-filled-1');
             player1Score += e.target.value; //adds the value of each square
             console.log(player1Score)
         }else{
-            e.target.classList.add('box-filled-2');
+            addClass(e.target, 'box-filled-2');
             player2Score += e.target.value; //adds the value of each square
             console.log(player2Score)
         }
@@ -123,8 +122,8 @@ const ticTacToe = (function(){
         player2Score = 0;
         squaresFilled = 0;
         for(let i = 0; i < squares.length; i++) {
-            squares[i].classList.remove('box-filled-1');
-            squares[i].classList.remove('box-filled-2');
+            removeClass(squares[i], 'box-filled-1');
+            removeClass(squares[i], 'box-filled-2');
         }
 
     };
@@ -134,20 +133,27 @@ const ticTacToe = (function(){
 
 
 //check if wins array includes playersScore
+//the & operator Performs the AND operation on each pair of bits
+// Each bit in the first operand is paired with the corresponding bit in the second operand
+//a simple array.includes would not have worked here as includes would only work if player selected 3 winning
+//squares whereas to win he might have to select up to 5 squares therefore the & operator works best here
 const checkIfWinner = ()  => {
-        if (wins.includes(player1Score)) {
-            endGame('screen-win-one', 'Winner')
-        } else if (wins.includes(player2Score)) {
-            endGame('screen-win-two', 'Winner')
-        } else if (squaresFilled === 9) {
+    for(let i = 0; i < squares.length; i++) {
+        if ((wins[i] & player1Score) === wins[i]) {
+            endGame('screen-win-one', 'Winner');
+            win = true;
+        } else if ((wins[i] & player2Score) === wins[i]) {
+            endGame('screen-win-two', 'Winner');
+            win = true;
+        } else if (!win && squaresFilled === 9) {
             endGame('screen-win-tie', 'Tie')
         }
-
+    }
 };
 
 
 //hide board game and call start function
-    gameBoard.style.display = 'none';
+    boardScreen.style.display = 'none';
     startGame();
     isSquareEmpty();
 
