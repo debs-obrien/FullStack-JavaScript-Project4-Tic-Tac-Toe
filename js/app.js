@@ -23,8 +23,12 @@ const ticTacToe = (function(){
     let win = false;
 
     let player1Active = true;
+    let player2Play = true;
+    let computerPlay = false;
+
     let player1Name = 'debbie';
     let player2Name = 'toni';
+
 
     //create the start and end screens
     const createScreen = () => {
@@ -114,26 +118,33 @@ const ticTacToe = (function(){
             addClass(e.target, 'box-filled-1');
             player1Score += e.target.value; //adds the value of each square
             console.log(player1Score)
-        }else{
+        }else if(player2Play){
             addClass(e.target, 'box-filled-2');
             if(player1Score === 3 || player1Score === 288){
                 addClass(squares[2], 'box-filled-1')
             }
             player2Score += e.target.value; //adds the value of each square
             console.log(player2Score)
+        }else if(computerPlay){
+
         }
         turn('active');
 
     };
+    function isEmpty(box){
+        if(!box.classList.contains('box-filled-1') && !box.classList.contains('box-filled-2')){
+            return true;
+        }
+    }
     //check to see if square is empty and if it is call setSquare function
     const isSquareEmpty = () => {
         square.addEventListener('click', function (e) {
-            if(!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+            if(isEmpty(e.target)) {
                 setSquare(e);
             }
         });
         square.addEventListener('mouseover', function (e) {
-            if(!e.target.classList.contains('box-filled-1') && !e.target.classList.contains('box-filled-2')) {
+            if(isEmpty(e.target)) {
                 if(player1Active){
                     e.target.style.backgroundImage = "url(img/o.svg)";
                 }else{
