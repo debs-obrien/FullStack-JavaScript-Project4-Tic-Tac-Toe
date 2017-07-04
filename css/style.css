@@ -137,5 +137,15 @@ h1 {
     .boxes .box-filled-2 {
       background-color: #3688C3;
       background-image: url(../img/x.svg); }
+.name{
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 35px;
+  padding-left: 20px;
+  vertical-align: top;
+}
+#player1.active .name{
+  color:white;
+}
+
 
 

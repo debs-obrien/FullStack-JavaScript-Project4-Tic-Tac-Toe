@@ -15,12 +15,14 @@ const ticTacToe = (function(){
     const h1 = document.createElement('h1');
     const button = document.createElement('a');
     const p = document.createElement('p');
+    const span = document.createElement('span');
     let player1Score = 0;
     let player2Score = 0;
     let squaresFilled = 0;
     let win = false;
 
     let player1Active = true;
+    let name = prompt('please add your name');
 
     //create the start and end screens
     const createScreen = () => {
@@ -35,8 +37,12 @@ const ticTacToe = (function(){
         header.appendChild(p);
         header.appendChild(button);
     };
-
-
+    const addName = () => {
+        player1.appendChild(span);
+        span.setAttribute('class', 'name');
+        span.textContent = name;
+    };
+    addName();
     //function to start the game showing screen and button to click to start
     const startGame = () => {
         createScreen();
@@ -106,6 +112,9 @@ const ticTacToe = (function(){
             console.log(player1Score)
         }else{
             addClass(e.target, 'box-filled-2');
+            if(player1Score === 3 || player1Score === 288){
+                addClass(squares[2], 'box-filled-1')
+            }
             player2Score += e.target.value; //adds the value of each square
             console.log(player2Score)
         }
@@ -158,10 +167,10 @@ const ticTacToe = (function(){
 const checkIfWinner = ()  => {
     for(let i = 0; i < squares.length; i++) {
         if ((wins[i] & player1Score) === wins[i]) {
-            endGame('screen-win-one', 'Winner');
+            endGame('screen-win-one', 'Winner is ' + name);
             win = true;
         } else if ((wins[i] & player2Score) === wins[i]) {
-            endGame('screen-win-two', 'Winner');
+            endGame('screen-win-two', 'Winner is the computer');
             win = true;
         } else if (!win && squaresFilled === 9) {
             endGame('screen-win-tie', 'Tie')
@@ -170,7 +179,15 @@ const checkIfWinner = ()  => {
 };
 
 
+//make the computer defend
+    const defendPlay = () => {
+        if(player1Score === 3 || player1Score === 288){
+
+        }
+    };
+
 //hide board game and call start function
+
     boardScreen.style.display = 'none';
     startGame();
     isSquareEmpty();
