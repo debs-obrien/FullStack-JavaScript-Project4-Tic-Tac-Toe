@@ -15,14 +15,16 @@ const ticTacToe = (function(){
     const h1 = document.createElement('h1');
     const button = document.createElement('a');
     const p = document.createElement('p');
-    const span = document.createElement('span');
+    const player1Span = document.createElement('span');
+    const player2Span = document.createElement('span');
     let player1Score = 0;
     let player2Score = 0;
     let squaresFilled = 0;
     let win = false;
 
     let player1Active = true;
-    let name = prompt('please add your name');
+    let player1Name = 'debbie';
+    let player2Name = 'toni';
 
     //create the start and end screens
     const createScreen = () => {
@@ -37,12 +39,14 @@ const ticTacToe = (function(){
         header.appendChild(p);
         header.appendChild(button);
     };
-    const addName = () => {
-        player1.appendChild(span);
+    const addName = (player, span, name) => {
+        player.appendChild(span);
         span.setAttribute('class', 'name');
         span.textContent = name;
     };
-    addName();
+
+    addName(player1, player1Span, player1Name);
+    addName(player2, player2Span, player2Name);
     //function to start the game showing screen and button to click to start
     const startGame = () => {
         createScreen();
