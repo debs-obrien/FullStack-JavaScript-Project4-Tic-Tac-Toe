@@ -18,8 +18,7 @@ const ticTacToe = (function(){
     const p = document.createElement('p');
     let player1Score = 0;
     let player2Score = 0;
-    let player1Winner = false;
-    let player2Winner = false;
+    let squaresFilled = 0;
 
 
     //create the start and end screens
@@ -36,7 +35,7 @@ const ticTacToe = (function(){
         header.appendChild(button);
     };
 
-    let squaresFilled = 0;
+
     //function to start the game showing screen and button to click to start
     const startGame = () => {
         createScreen();
@@ -71,20 +70,25 @@ const ticTacToe = (function(){
 
     };
 
-
+    const removeClass = (from, className) => {
+        from.classList.remove(className);
+    };
+    const addClass = (from, className) => {
+        from.classList.add(className);
+    };
 
     //function to take turns
-    const turn = () => {
-        if(player1.classList.contains('active')){
-            player1.classList.remove('active');
-            player2.classList.add('active');
+    const turn = (className) => {
+        if(player1.classList.contains(className)){
+            removeClass(player1, className);
+            addClass(player2, className);
             squaresFilled += 1;
         }else{
-            player1.classList.add('active');
-            player2.classList.remove('active');
+            addClass(player1, className);
+            removeClass(player2, className);
             squaresFilled += 1;
         }
-
+        checkIfWinner();
     };
 
     //set square to players x or o and call turn function to change turns
@@ -95,16 +99,14 @@ const ticTacToe = (function(){
 
         if(player1.classList.contains('active')){
             e.target.classList.add('box-filled-1');
-            player1Score += e.target.value;
+            player1Score += e.target.value; //adds the value of each square
             console.log(player1Score)
         }else{
             e.target.classList.add('box-filled-2');
-            player2Score += e.target.value;
+            player2Score += e.target.value; //adds the value of each square
             console.log(player2Score)
         }
-        checkIfWinner();
-        turn();
-        isAllFilled();
+        turn('active');
 
     };
     //check to see if square is empty and if it is call setSquare function
@@ -115,10 +117,8 @@ const ticTacToe = (function(){
             }
         });
     };
-    //reset squares when starting a new game
+    //reset squares and scores when starting a new game
     const resetSquares = () => {
-        player1Winner = false;
-        player2Winner = false;
         player1Score = 0;
         player2Score = 0;
         squaresFilled = 0;
@@ -128,32 +128,26 @@ const ticTacToe = (function(){
         }
 
     };
-    //if all squares are filled in
-    const isAllFilled = () => {
-        // if all filled and no winner game is tie
-        if(squaresFilled === 9){
-            endGame('screen-win-tie', 'Tie');
-        }
-
-    };
 
 
-//hide board game and call start function
-gameBoard.style.display = 'none';
 
 
+
+//check if wins array includes playersScore
 const checkIfWinner = ()  => {
-    for(let i = 0; i < squares.length; i++) {
-        if ((wins[i] & player1Score) === wins[i]) {
+        if (wins.includes(player1Score)) {
             endGame('screen-win-one', 'Winner')
-        } else if ((wins[i] & player2Score) === wins[i]) {
+        } else if (wins.includes(player2Score)) {
             endGame('screen-win-two', 'Winner')
         } else if (squaresFilled === 9) {
             endGame('screen-win-tie', 'Tie')
         }
-    }
+
 };
 
+
+//hide board game and call start function
+    gameBoard.style.display = 'none';
     startGame();
     isSquareEmpty();
 
