@@ -133,18 +133,23 @@ const ticTacToe = (function(){
                 console.log('random num ' +randomNum);
                 addClass(squares[randomNum], 'box-filled-2');
                 calculateScore();
-
+                squaresFilled += 1;
+                console.log('squares filled' +squaresFilled);
                 player2Score += squares[randomNum].value;
                 removeSquare(randomNum);
-                squaresFilled += 1;
                 console.log('2 score: '+ player2Score);
+                checkIfWinner();
+                console.log('checkwinner is true');
+                console.log(win);
                 break;
             }else if(remainingSquares.length === 0){
+                checkIfWinner();
+                console.log('checkwinner is true')
                 break;
+
             }
         }
 
-        console.log('squares filled' +squaresFilled);
          turn('active');
     };
 
@@ -152,17 +157,14 @@ const ticTacToe = (function(){
     const turn = (className) => {
 
         if(player1Active){
-            removeClass(player1, className);
-            addClass(player2, className);
-            player1Active = false;
-        }else{
-            addClass(player1, className);
-            removeClass(player2, className);
-            player1Active = true;
-        }
-
-        checkIfWinner();
-
+                removeClass(player1, className);
+                addClass(player2, className);
+                player1Active = false;
+            }else{
+                addClass(player1, className);
+                removeClass(player2, className);
+                player1Active = true;
+            }
     };
 
 
@@ -185,8 +187,11 @@ const ticTacToe = (function(){
                     console.log('player1Score ' +player1Score);
                     turn('active');
                     squaresFilled += 1;
+                    console.log('squares filled' +squaresFilled);
+                    checkIfWinner();
+                    console.log('checkwinner is true')
+                    console.log(win);
                     if(computerPlay){
-
                         computersTurn(); //if playing against the computer then call computers turn
                     }
                 }else if(player2Play){
@@ -196,6 +201,10 @@ const ticTacToe = (function(){
                     console.log(player2Score)
                     turn('active');
                     squaresFilled += 1;
+
+                    console.log('squares filled' +squaresFilled);
+                    checkIfWinner();
+                    console.log('checkwinner is true')
                 }
             }
 
@@ -222,16 +231,20 @@ const ticTacToe = (function(){
 //a simple array.includes would not have worked here as includes would only work if player selected 3 winning
 //squares whereas to win he might have to select up to 5 squares therefore the & operator works best here
 const checkIfWinner = ()  => {
+
     for(let i = 0; i < squares.length; i++) {
         if ((wins[i] & player1Score) === wins[i]) {
+            win = true;
             endGame('screen-win-one', 'Winner is ' + player1Name);
-            win = true;
+
         } else if ((wins[i] & player2Score) === wins[i]) {
-            endGame('screen-win-two', 'Winner is ' + player2Name);
             win = true;
-        } else if (!win && squaresFilled >= 9) {
-            endGame('screen-win-tie', 'Tie')
+            endGame('screen-win-two', 'Winner is ' + player2Name);
+
         }
+    }
+    if (!win && squaresFilled === 9) {
+        endGame('screen-win-tie', 'Tie')
     }
 };
 
