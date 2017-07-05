@@ -134,23 +134,23 @@ const ticTacToe = (function(){
                 addClass(squares[randomNum], 'box-filled-2');
                 calculateScore();
 
-
                 player2Score += squares[randomNum].value;
                 removeSquare(randomNum);
+                squaresFilled += 1;
                 console.log('2 score: '+ player2Score);
-                checkIfWinner();
                 break;
             }else if(remainingSquares.length === 0){
                 break;
             }
         }
-        squaresFilled += 1;
+
         console.log('squares filled' +squaresFilled);
          turn('active');
     };
 
     //function to take turns
     const turn = (className) => {
+
         if(player1Active){
             removeClass(player1, className);
             addClass(player2, className);
@@ -160,6 +160,8 @@ const ticTacToe = (function(){
             removeClass(player2, className);
             player1Active = true;
         }
+
+        checkIfWinner();
 
     };
 
@@ -173,27 +175,27 @@ const ticTacToe = (function(){
         }
         square.addEventListener('click', function (e) {
             if(isEmpty(e.target)) {
+
                 if(player1Active){
                     addClass(e.target, 'box-filled-1');
                     calculateScore();
-                    squaresFilled += 1;
                     player1Score += e.target.value;
                     removeSquare(squaresValue.indexOf(e.target.value)); //find out the index of the square clicked
                     console.log('remove ' +squaresValue.indexOf(e.target.value));
                     console.log('player1Score ' +player1Score);
-                    checkIfWinner();
                     turn('active');
+                    squaresFilled += 1;
                     if(computerPlay){
+
                         computersTurn(); //if playing against the computer then call computers turn
                     }
                 }else if(player2Play){
                     addClass(e.target, 'box-filled-2');
                     calculateScore();
-                    squaresFilled += 1;
                     player2Score += e.target.value;
                     console.log(player2Score)
-                    checkIfWinner();
                     turn('active');
+                    squaresFilled += 1;
                 }
             }
 
@@ -213,12 +215,6 @@ const ticTacToe = (function(){
         });
     };
 
-    //reset squares and scores when starting a new game
-
-
-
-
-
 
 //check if wins array includes playersScore
 //the & operator Performs the AND operation on each pair of bits
@@ -233,7 +229,7 @@ const checkIfWinner = ()  => {
         } else if ((wins[i] & player2Score) === wins[i]) {
             endGame('screen-win-two', 'Winner is ' + player2Name);
             win = true;
-        } else if (!win && squaresFilled === 9) {
+        } else if (!win && squaresFilled >= 9) {
             endGame('screen-win-tie', 'Tie')
         }
     }
