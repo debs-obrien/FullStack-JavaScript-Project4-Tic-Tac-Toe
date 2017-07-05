@@ -52,6 +52,19 @@ const ticTacToe = (function(){
             squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
         }
     }
+    const resetSquares = () => {
+        player1Score = 0;
+        player2Score = 0;
+        squaresFilled = 0;
+        win = false;
+        remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        randomNum = 10;
+        for(let i = 0; i < squares.length; i++) {
+            removeClass(squares[i], 'box-filled-1');
+            removeClass(squares[i], 'box-filled-2');
+        }
+
+    };
 
     //create the start and end screens
     const createScreen = () => {
@@ -91,6 +104,7 @@ const ticTacToe = (function(){
     };
     //function at end of the game showing screen and button to click to start again
     const endGame = (screenClass, text) => {
+        resetSquares();
         createScreen();
         boardScreen.style.display = 'none';
 
@@ -104,7 +118,7 @@ const ticTacToe = (function(){
             boardScreen.style.display = 'block';
             player1.className += ' active';
         });
-        resetSquares();
+
 
     };
 
@@ -119,22 +133,20 @@ const ticTacToe = (function(){
                 console.log('random num ' +randomNum);
                 addClass(squares[randomNum], 'box-filled-2');
                 calculateScore();
+
+
                 player2Score += squares[randomNum].value;
                 removeSquare(randomNum);
                 console.log('2 score: '+ player2Score);
+                checkIfWinner();
                 break;
             }else if(remainingSquares.length === 0){
                 break;
-
             }
-
         }
-
-             //adds the value of each square
-            console.log('player2Score ' +player2Score);
-            turn('active');
-
-
+        squaresFilled += 1;
+        console.log('squares filled' +squaresFilled);
+         turn('active');
     };
 
     //function to take turns
@@ -148,8 +160,7 @@ const ticTacToe = (function(){
             removeClass(player2, className);
             player1Active = true;
         }
-        squaresFilled += 1;
-        checkIfWinner();
+
     };
 
 
@@ -162,25 +173,30 @@ const ticTacToe = (function(){
         }
         square.addEventListener('click', function (e) {
             if(isEmpty(e.target)) {
-
                 if(player1Active){
                     addClass(e.target, 'box-filled-1');
                     calculateScore();
+                    squaresFilled += 1;
                     player1Score += e.target.value;
                     removeSquare(squaresValue.indexOf(e.target.value)); //find out the index of the square clicked
                     console.log('remove ' +squaresValue.indexOf(e.target.value));
                     console.log('player1Score ' +player1Score);
+                    checkIfWinner();
+                    turn('active');
                     if(computerPlay){
                         computersTurn(); //if playing against the computer then call computers turn
                     }
                 }else if(player2Play){
                     addClass(e.target, 'box-filled-2');
                     calculateScore();
+                    squaresFilled += 1;
                     player2Score += e.target.value;
                     console.log(player2Score)
+                    checkIfWinner();
+                    turn('active');
                 }
             }
-            turn('active');
+
         });
 
         square.addEventListener('mouseover', function (e) {
@@ -198,17 +214,7 @@ const ticTacToe = (function(){
     };
 
     //reset squares and scores when starting a new game
-    const resetSquares = () => {
-        player1Score = 0;
-        player2Score = 0;
-        squaresFilled = 0;
-        remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        for(let i = 0; i < squares.length; i++) {
-            removeClass(squares[i], 'box-filled-1');
-            removeClass(squares[i], 'box-filled-2');
-        }
 
-    };
 
 
 
