@@ -71,6 +71,9 @@ const ticTacToe = (function () {
         if (!player1Name) {
             player1Name = prompt('whats player1\'s name');
         }
+        if (player1Name === null) {
+            player1Name = 'Player 1';
+        }
         addName(player1, player1Span, player1Name);
     }
 
@@ -142,6 +145,9 @@ const ticTacToe = (function () {
         getPlayer1Name();
         if (!player2Name || player2Name === 'Super Computer') {
             player2Name = prompt('whats player2\'s name');
+        }
+        if (player2Name === null) {
+            player2Name = 'Player 2';
         }
         addName(player2, player2Span, player2Name);
     }
