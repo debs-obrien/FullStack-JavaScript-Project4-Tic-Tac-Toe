@@ -118,11 +118,13 @@ const ticTacToe = (function () {
         header.appendChild(p);
         header.appendChild(button);
     }
+    //add the names span to the boxes at top of screen
     function addName(player, span, name){
         player.appendChild(span);
         span.setAttribute('class', 'name');
         span.textContent = name;
     }
+    //if you click the button play against opponent
     function playAgain(){
         setScreen();
         player2Play = true;
@@ -133,6 +135,7 @@ const ticTacToe = (function () {
         }
         addName(player2, player2Span, player2Name);
     }
+    //if you click the button play against computer
     function playAgainComputer(){
         setScreen();
         getPlayer1Name();
@@ -141,7 +144,13 @@ const ticTacToe = (function () {
         player2Name = 'Super Computer';
         addName(player2, player2Span, player2Name);
     }
-
+    //if you click on the square to claim it
+    function squareClaimed(e, boxClass){
+        addClass(e.target, boxClass);
+        calculateScore();
+        squaresFilled += 1;
+        turn('active');
+    }
 
     //function to start the game showing screen and button to click to start
     const startGame = () => {
@@ -193,7 +202,7 @@ const ticTacToe = (function () {
         while (!remainingSquares.includes(randomNum)) {
             randomNum = getRandom(remainingSquares.length);
             randomNum = remainingSquares[randomNum];
-            //if the ramdom number is in the remaining squares array, claim square and remove
+            //if the random number is in the remaining squares array, claim square and remove
             if (remainingSquares.includes(randomNum)) {
                 addClass(squares[randomNum], 'box-filled-2');
                 calculateScore();
@@ -211,9 +220,7 @@ const ticTacToe = (function () {
         //turn over change to player1
         turn('active');
     };
-
-
-
+    
     //check to see if square is empty and if it is fill it
     const isSquareEmpty = () => {
         function isEmpty(box) {
@@ -226,24 +233,19 @@ const ticTacToe = (function () {
             if (isEmpty(e.target)) {
                 //if its player ones turn, claim square clicked, remove from remaining squares array, turn over
                 if (player1Active) {
-                    addClass(e.target, 'box-filled-1');
-                    calculateScore();
+                    squareClaimed(e, 'box-filled-1');
                     player1Score += e.target.value;
-                    removeSquare(squaresValue.indexOf(e.target.value)); //find out the index of the square clicked
-                    turn('active');
-                    squaresFilled += 1;
                     checkIfWinner();
+                    removeSquare(squaresValue.indexOf(e.target.value)); //find out the index of the square clicked
+
                     //if playing against the computer call the computers turn
                     if (computerPlay) {
                         computersTurn(); //if playing against the computer then call computers turn
                     }
                     //if playing against player 2 let player 2 click and claim square
                 } else if (player2Play) {
-                    addClass(e.target, 'box-filled-2');
-                    calculateScore();
+                    squareClaimed(e, 'box-filled-2');
                     player2Score += e.target.value;
-                    turn('active');
-                    squaresFilled += 1;
                     checkIfWinner();
                 }
             }
