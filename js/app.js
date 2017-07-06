@@ -196,6 +196,7 @@ const ticTacToe = (function () {
             playAgainComputer();
         });
     };
+    //these are the possible win scores for each box across, down and diagonal
     let boxWin0 = [6, 72, 272];
     let boxWin1 = [144];
     let boxWin2 = [3, 82, 288];
@@ -205,8 +206,9 @@ const ticTacToe = (function () {
     let boxWin6 = [9, 20, 384];
     let boxWin7 = [18];
     let boxWin8 = [36, 17, 192];
+    //start by letting the boxClaimed to false as the computer hasnt claimed a box yet
     let boxClaimed = false;
-
+    //this will help the computer win or defend
     function winOrDefend(boxWinArray, box) {
         for (let i = 0; i < squares.length; i++) {
             if ((boxWinArray[i] & player1Score) === boxWinArray[i] || (boxWinArray[i] & player2Score) === boxWinArray[i]) {
@@ -222,47 +224,47 @@ const ticTacToe = (function () {
 
         }
     }
+    
     //when its the computers turn
     //while the random number isnt in the remaining squares array get a random number
     const computersTurn = () => {
         while (!boxClaimed) {
-            switch(true){
-                case (remainingSquares.includes(0)):
+
+                if (remainingSquares.includes(0)){
                     winOrDefend(boxWin0, 0);
                     console.log('it checked 0');
-                    break;
-                case (remainingSquares.includes(1)):
+                }
+                if(!boxClaimed && remainingSquares.includes(1)) {
                     winOrDefend(boxWin1, 1);
                     console.log('it checked 1');
-                    break;
-                case (remainingSquares.includes(2)):
+                }
+                if(!boxClaimed && remainingSquares.includes(2)) {
                     winOrDefend(boxWin2, 2);
                     console.log('it checked 2');
-                    break;
-                case (remainingSquares.includes(3)):
+                }
+                if (!boxClaimed && remainingSquares.includes(3)) {
                     winOrDefend(boxWin3, 3);
                     console.log('it checked 3');
-                    break;
-                case (remainingSquares.includes(4)):
+                }
+                if (!boxClaimed && remainingSquares.includes(4)) {
                     winOrDefend(boxWin4, 4);
                     console.log('it checked 4');
-                    break;
-                case (remainingSquares.includes(5)):
+                }
+                if (!boxClaimed && remainingSquares.includes(5)) {
                     winOrDefend(boxWin5, 5);
                     console.log('it checked 5');
-                    break;
-                case (remainingSquares.includes(6)):
+                }
+                if (!boxClaimed && remainingSquares.includes(6)) {
                     winOrDefend(boxWin6, 6);
                     console.log('it checked 6');
-                    break;
-                case (remainingSquares.includes(7)):
+                }
+                if (!boxClaimed && remainingSquares.includes(7)) {
                     winOrDefend(boxWin7, 7);
                     console.log('it checked 7');
-                    break;
-                case (remainingSquares.includes(8)):
+                }
+                if (!boxClaimed && remainingSquares.includes(8)){
                     winOrDefend(boxWin8, 8);
                     console.log('it checked 8');
-                    break;
             }
             randomNum = getRandom(remainingSquares.length);
             randomNum = remainingSquares[randomNum];
