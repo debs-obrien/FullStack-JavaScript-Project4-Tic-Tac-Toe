@@ -217,7 +217,7 @@ const ticTacToe = (function () {
     //these are the possible win scores for each box across, down and diagonal
     //delete a few of these values if you want to make the game a bit easier
     let boxWin0 = [6, 72, 272];
-    let boxWin1 = [144];
+    let boxWin1 = [144, 5];
     let boxWin2 = [3, 80, 288];
     let boxWin3 = [65, 48];
     let boxWin4 = [257, 68, 40, 130];
