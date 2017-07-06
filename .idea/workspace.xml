@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="17cf823b-a648-4ac2-9ce1-ca1b9da50749" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/app.js" afterPath="$PROJECT_DIR$/js/app.js" />
     </list>
     <ignored path="tic-tac-toe-v2.iws" />
@@ -35,8 +36,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="224" column="26" lean-forward="false" selection-start-line="224" selection-start-column="26" selection-end-line="224" selection-end-column="26" />
+            <state relative-caret-position="193">
+              <caret line="217" column="76" lean-forward="false" selection-start-line="217" selection-start-column="76" selection-end-line="217" selection-end-column="76" />
               <folding />
             </state>
           </provider>
@@ -374,7 +375,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="91080000" />
+    <option name="totallyTimeSpent" value="91299000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="679" y="23" width="1188" height="981" extended-state="0" />
@@ -761,8 +762,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="224" column="26" lean-forward="false" selection-start-line="224" selection-start-column="26" selection-end-line="224" selection-end-column="26" />
+        <state relative-caret-position="193">
+          <caret line="217" column="76" lean-forward="false" selection-start-line="217" selection-start-column="76" selection-end-line="217" selection-end-column="76" />
           <folding />
         </state>
       </provider>
