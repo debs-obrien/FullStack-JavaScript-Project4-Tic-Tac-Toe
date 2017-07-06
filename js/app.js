@@ -36,38 +36,38 @@ const ticTacToe = (function () {
         button2.setAttribute('class', 'button button2');
         button2.textContent = 'Play against Computer';
     }
-//gets a random number for the computers turn
+    //gets a random number for the computers turn
     function getRandom(num) {
         return Math.floor(Math.random() * num);
     }
-//removes the active class of player
+    //removes the active class of player
     function removeClass(from, className) {
         from.classList.remove(className);
     }
-//adds the active class of player
+    //adds the active class of player
     function addClass(from, className) {
         from.classList.add(className);
     }
-//removes the square that has been clicked from the remaining squares array so as computer knows which
-// squares he can click on.
+    //removes the square that has been clicked from the remaining squares array so as computer knows which
+    // squares he can click on.
     function removeSquare(square) {
         let index = remainingSquares.indexOf(square);
         remainingSquares.splice(index, 1);
     }
-//calculte the score of the square by making each square equal to the power of 2
+    //calculte the score of the square by making each square equal to the power of 2
     function calculateScore() {
         for (let i = 0; i < squares.length; i++) {
             squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
         }
     }
-// get the players name by using prompt
+    // get the players name by using prompt
     function getPlayer1Name() {
         if (!player1Name) {
             player1Name = prompt('whats player1\'s name');
         }
         addName(player1, player1Span, player1Name);
     }
-//set the screen when click on start game
+    //set the screen when click on start game
     function setScreen() {
         div.remove();
         boardScreen.style.display = 'block';
