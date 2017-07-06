@@ -4,5 +4,5 @@
   - play against an opponent
   - play against the computer
 
-  ### By Debbie O'Brien
-  ### 6 July 2017
+ By Debbie O'Brien
+ 6 July 2017
