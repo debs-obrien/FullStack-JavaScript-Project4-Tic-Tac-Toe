@@ -30,42 +30,44 @@ const ticTacToe = (function () {
     let player1Name;
     let player2Name;
 
+    //creates the second button to play against the computer
     function createButton2() {
         header.appendChild(button2);
         button2.setAttribute('class', 'button button2');
         button2.textContent = 'Play against Computer';
     }
-
+//gets a random number for the computers turn
     function getRandom(num) {
         return Math.floor(Math.random() * num);
     }
-
+//removes the active class of player
     function removeClass(from, className) {
         from.classList.remove(className);
     }
-
+//adds the active class of player
     function addClass(from, className) {
         from.classList.add(className);
     }
-
+//removes the square that has been clicked from the remaining squares array so as computer knows which
+// squares he can click on.
     function removeSquare(square) {
         let index = remainingSquares.indexOf(square);
         remainingSquares.splice(index, 1);
     }
-
+//calculte the score of the square by making each square equal to the power of 2
     function calculateScore() {
         for (let i = 0; i < squares.length; i++) {
             squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
         }
     }
-
+// get the players name by using prompt
     function getPlayer1Name() {
         if (!player1Name) {
             player1Name = prompt('whats player1\'s name');
         }
         addName(player1, player1Span, player1Name);
     }
-
+//set the screen when click on start game
     function setScreen() {
         div.remove();
         boardScreen.style.display = 'block';
@@ -120,7 +122,7 @@ const ticTacToe = (function () {
         div.setAttribute('id', 'start');
         button.textContent = 'Play against opponent';
         createButton2();
-
+//when play game against opponent is clicked
         button.addEventListener('click', () => {
             setScreen();
             getPlayer1Name();
@@ -130,6 +132,7 @@ const ticTacToe = (function () {
             }
             addName(player2, player2Span, player2Name);
         });
+ //when play game against computer is clicked
         button2.addEventListener('click', () => {
             setScreen();
             getPlayer1Name();
@@ -148,6 +151,7 @@ const ticTacToe = (function () {
         createButton2();
         div.className += screenClass;
         div.setAttribute('id', 'finish');
+        //change the text of the buttons after the game
         if (computerPlay) {
             button2.textContent = 'play again against computer';
             button.textContent = 'try a game against an opponent';
@@ -156,7 +160,7 @@ const ticTacToe = (function () {
             button2.textContent = 'try beat the computer';
         }
         p.textContent = text;
-
+//when play game against opponent is clicked
         button.addEventListener('click', () => {
             setScreen();
             player2Play = true;
@@ -167,6 +171,7 @@ const ticTacToe = (function () {
             }
             addName(player2, player2Span, player2Name);
         });
+ //when play game against computer is clicked
         button2.addEventListener('click', () => {
             setScreen();
             player1Active = true;
@@ -176,11 +181,13 @@ const ticTacToe = (function () {
             addName(player2, player2Span, player2Name);
         });
     };
-
+//when its the computers turn
+//while the random number isnt in the remaining squares array get a random number
     const computersTurn = () => {
         while (!remainingSquares.includes(randomNum)) {
             randomNum = getRandom(remainingSquares.length);
             randomNum = remainingSquares[randomNum];
+            //if the ramdom number is in the remaining squares array, claim square and remove
             if (remainingSquares.includes(randomNum)) {
                 addClass(squares[randomNum], 'box-filled-2');
                 calculateScore();
@@ -189,11 +196,13 @@ const ticTacToe = (function () {
                 removeSquare(randomNum);
                 checkIfWinner();
                 break;
+                //if there are no remaining squares check if winner
             } else if (remainingSquares.length === 0) {
                 checkIfWinner();
                 break;
             }
         }
+        //turn over change to player1
         turn('active');
     };
 
@@ -217,10 +226,10 @@ const ticTacToe = (function () {
                 return true;
             }
         }
-
+//if square is clicked and is empty
         square.addEventListener('click', function (e) {
             if (isEmpty(e.target)) {
-
+//if its player ones turn, claim square clicked, remove from remaining squares array, turn over
                 if (player1Active) {
                     addClass(e.target, 'box-filled-1');
                     calculateScore();
@@ -229,9 +238,11 @@ const ticTacToe = (function () {
                     turn('active');
                     squaresFilled += 1;
                     checkIfWinner();
+                    //if playing against the computer call the computers turn
                     if (computerPlay) {
                         computersTurn(); //if playing against the computer then call computers turn
                     }
+                    //if playing against player 2 let player 2 click and claim square
                 } else if (player2Play) {
                     addClass(e.target, 'box-filled-2');
                     calculateScore();
@@ -243,6 +254,7 @@ const ticTacToe = (function () {
             }
 
         });
+        //mouseover the square to see if you want to go there
         square.addEventListener('mouseover', function (e) {
             if (isEmpty(e.target)) {
                 if (player1Active) {
@@ -252,6 +264,7 @@ const ticTacToe = (function () {
                 }
             }
         });
+        //remove mouseover when not on the square
         square.addEventListener('mouseout', function (e) {
             e.target.style.backgroundImage = "";
         });
