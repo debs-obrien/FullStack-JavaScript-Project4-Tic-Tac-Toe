@@ -36,30 +36,36 @@ const ticTacToe = (function () {
         button2.setAttribute('class', 'button button2');
         button2.textContent = 'Play against Computer';
     }
+
     //gets a random number for the computers turn
     function getRandom(num) {
         return Math.floor(Math.random() * num);
     }
+
     //removes the active class of player
     function removeClass(from, className) {
         from.classList.remove(className);
     }
+
     //adds the active class of player
     function addClass(from, className) {
         from.classList.add(className);
     }
+
     //removes the square that has been clicked from the remaining squares array so as computer knows which
     // squares he can click on.
     function removeSquare(square) {
         let index = remainingSquares.indexOf(square);
         remainingSquares.splice(index, 1);
     }
+
     //calculate the score of the square by making each square equal to the power of 2
     function calculateScore() {
         for (let i = 0; i < squares.length; i++) {
             squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
         }
     }
+
     // get the players name by using prompt
     function getPlayer1Name() {
         if (!player1Name) {
@@ -67,6 +73,7 @@ const ticTacToe = (function () {
         }
         addName(player1, player1Span, player1Name);
     }
+
     //set the screen when click on start game
     function setScreen() {
         div.remove();
@@ -75,8 +82,9 @@ const ticTacToe = (function () {
         addClass(player1, 'active');
         removeClass(player2, 'active');
     }
+
     //function to take turns
-    function turn(className){
+    function turn(className) {
         if (player1Active) {
             removeClass(player1, className);
             addClass(player2, className);
@@ -89,7 +97,7 @@ const ticTacToe = (function () {
     }
 
     //if the game has been played reset all the values
-    function resetSquares(){
+    function resetSquares() {
         player1Score = 0;
         player2Score = 0;
         squaresFilled = 0;
@@ -106,7 +114,7 @@ const ticTacToe = (function () {
     }
 
     //create the start and end screens
-    function createScreen(){
+    function createScreen() {
         div.className = 'screen screen-win ';
         h1.textContent = 'Tic Tac Toe';
         button.setAttribute('href', '#');
@@ -118,14 +126,16 @@ const ticTacToe = (function () {
         header.appendChild(p);
         header.appendChild(button);
     }
+
     //add the names span to the boxes at top of screen
-    function addName(player, span, name){
+    function addName(player, span, name) {
         player.appendChild(span);
         span.setAttribute('class', 'name');
         span.textContent = name;
     }
+
     //if you click the button play against opponent
-    function playAgain(){
+    function playAgain() {
         setScreen();
         player2Play = true;
         computerPlay = false;
@@ -135,8 +145,9 @@ const ticTacToe = (function () {
         }
         addName(player2, player2Span, player2Name);
     }
+
     //if you click the button play against computer
-    function playAgainComputer(){
+    function playAgainComputer() {
         setScreen();
         getPlayer1Name();
         player1Active = true;
@@ -144,8 +155,9 @@ const ticTacToe = (function () {
         player2Name = 'Super Computer';
         addName(player2, player2Span, player2Name);
     }
+
     //if you click on the square to claim it
-    function squareClaimed(e, boxClass){
+    function squareClaimed(e, boxClass) {
         addClass(e.target, boxClass);
         calculateScore();
         squaresFilled += 1;
@@ -209,75 +221,96 @@ const ticTacToe = (function () {
     //start by letting the boxClaimed to false as the computer hasnt claimed a box yet
     let boxClaimed = false;
     //this will help the computer win or defend
-    function winOrDefend(boxWinArray, box) {
+    //when computer claims a square do this
+    function claimSquare(box){
+        boxClaimed = true;
+        addClass(squares[box], 'box-filled-2');
+        calculateScore();
+        squaresFilled += 1;
+        player2Score += squares[box].value;
+        removeSquare(box);
+        checkIfWinner();
+    }
+    function tryToWin(boxWinArray, box) {
         for (let i = 0; i < squares.length; i++) {
-            if ((boxWinArray[i] & player1Score) === boxWinArray[i] || (boxWinArray[i] & player2Score) === boxWinArray[i]) {
-                boxClaimed = true;
-                addClass(squares[box], 'box-filled-2');
-                calculateScore();
-                squaresFilled += 1;
-                player2Score += squares[box].value;
-                removeSquare(box);
-                checkIfWinner();
-                console.log('defence option ' +box);
+            if ((boxWinArray[i] & player2Score) === boxWinArray[i]) {
+                claimSquare(box)
             }
-
         }
     }
-    
+
+    function needToDefend(boxWinArray, box) {
+        for (let i = 0; i < squares.length; i++) {
+            if ((boxWinArray[i] & player1Score) === boxWinArray[i]) {
+                claimSquare(box)
+            }
+        }
+    }
+
     //when its the computers turn
-    //while the random number isnt in the remaining squares array get a random number
+    //while no box has been claimed test out all statements until you can claim a box
     const computersTurn = () => {
         while (!boxClaimed) {
-
-                if (remainingSquares.includes(0)){
-                    winOrDefend(boxWin0, 0);
-                    console.log('it checked 0');
-                }
-                if(!boxClaimed && remainingSquares.includes(1)) {
-                    winOrDefend(boxWin1, 1);
-                    console.log('it checked 1');
-                }
-                if(!boxClaimed && remainingSquares.includes(2)) {
-                    winOrDefend(boxWin2, 2);
-                    console.log('it checked 2');
-                }
-                if (!boxClaimed && remainingSquares.includes(3)) {
-                    winOrDefend(boxWin3, 3);
-                    console.log('it checked 3');
-                }
-                if (!boxClaimed && remainingSquares.includes(4)) {
-                    winOrDefend(boxWin4, 4);
-                    console.log('it checked 4');
-                }
-                if (!boxClaimed && remainingSquares.includes(5)) {
-                    winOrDefend(boxWin5, 5);
-                    console.log('it checked 5');
-                }
-                if (!boxClaimed && remainingSquares.includes(6)) {
-                    winOrDefend(boxWin6, 6);
-                    console.log('it checked 6');
-                }
-                if (!boxClaimed && remainingSquares.includes(7)) {
-                    winOrDefend(boxWin7, 7);
-                    console.log('it checked 7');
-                }
-                if (!boxClaimed && remainingSquares.includes(8)){
-                    winOrDefend(boxWin8, 8);
-                    console.log('it checked 8');
+            if (!boxClaimed && remainingSquares.includes(0)) {
+                tryToWin(boxWin0, 0);
             }
+            if (!boxClaimed && remainingSquares.includes(1)) {
+                tryToWin(boxWin1, 1);
+            }
+            if (!boxClaimed && remainingSquares.includes(2)) {
+                tryToWin(boxWin2, 2);
+            }
+            if (!boxClaimed && remainingSquares.includes(3)) {
+                tryToWin(boxWin3, 3);
+            }
+            if (!boxClaimed && remainingSquares.includes(4)) {
+                tryToWin(boxWin4, 4);
+            }
+            if (!boxClaimed && remainingSquares.includes(5)) {
+                tryToWin(boxWin5, 5);
+            }
+            if (!boxClaimed && remainingSquares.includes(6)) {
+                tryToWin(boxWin6, 6);
+            }
+            if (!boxClaimed && remainingSquares.includes(7)) {
+                tryToWin(boxWin7, 7);
+            }
+            if (!boxClaimed && remainingSquares.includes(8)) {
+                tryToWin(boxWin8, 8);
+            }
+            if (!boxClaimed && remainingSquares.includes(0)) {
+                needToDefend(boxWin0, 0);
+            }
+            if (!boxClaimed && remainingSquares.includes(1)) {
+                needToDefend(boxWin1, 1);
+            }
+            if (!boxClaimed && remainingSquares.includes(2)) {
+                needToDefend(boxWin2, 2);
+            }
+            if (!boxClaimed && remainingSquares.includes(3)) {
+                needToDefend(boxWin3, 3);
+            }
+            if (!boxClaimed && remainingSquares.includes(4)) {
+                needToDefend(boxWin4, 4);
+            }
+            if (!boxClaimed && remainingSquares.includes(5)) {
+                needToDefend(boxWin5, 5);
+            }
+            if (!boxClaimed && remainingSquares.includes(6)) {
+                needToDefend(boxWin6, 6);
+            }
+            if (!boxClaimed && remainingSquares.includes(7)) {
+                needToDefend(boxWin7, 7);
+            }
+            if (!boxClaimed && remainingSquares.includes(8)) {
+                needToDefend(boxWin8, 8);
+            }
+            //so the computer couldnt win or didnt need to defend so just go random
             randomNum = getRandom(remainingSquares.length);
             randomNum = remainingSquares[randomNum];
             //if the random number is in the remaining squares array, claim square and remove
             if (!boxClaimed && remainingSquares.includes(randomNum)) {
-                addClass(squares[randomNum], 'box-filled-2');
-                calculateScore();
-                squaresFilled += 1;
-                player2Score += squares[randomNum].value;
-                removeSquare(randomNum);
-                checkIfWinner();
-                boxClaimed = true;
-                console.log('it took random ' +randomNum);
+                claimSquare(randomNum);
                 break;
                 //if there are no remaining squares check if winner
             } else if (remainingSquares.length === 0) {
@@ -285,7 +318,7 @@ const ticTacToe = (function () {
                 break;
             }
         }
-        //turn over change to player1
+        //turn over - change to player1
         turn('active');
     };
 
@@ -296,6 +329,7 @@ const ticTacToe = (function () {
                 return true;
             }
         }
+
         //if square is clicked and is empty
         square.addEventListener('click', function (e) {
             if (isEmpty(e.target)) {
