@@ -61,6 +61,13 @@ const ticTacToe = (function(){
         }
         addName(player1, player1Span, player1Name);
     }
+    function setScreen(){
+        div.remove();
+        boardScreen.style.display = 'block';
+        resetSquares();
+        addClass(player1, 'active');
+        removeClass(player2, 'active');
+    }
     //if the game has been played reset all the values
     const resetSquares = () => {
         player1Score = 0;
@@ -109,26 +116,19 @@ const ticTacToe = (function(){
         createButton2();
 
         button.addEventListener('click', () => {
-            div.remove();
-            boardScreen.style.display = 'block';
-            player2Play = true;
-            addClass(player1, 'active');
-            removeClass(player2, 'active');
+            setScreen();
             getPlayer1Name();
+            player2Play = true;
             if(!player2Name){
                 player2Name = prompt('whats player2\'s name');
             }
             addName(player2, player2Span, player2Name);
         });
         button2.addEventListener('click', () => {
-            div.remove();
-            boardScreen.style.display = 'block';
+            setScreen();
+            getPlayer1Name();
             player1Active = true;
             computerPlay = true;
-            addClass(player1, 'active');
-            removeClass(player2, 'active');
-            resetSquares();
-            getPlayer1Name();
             player2Name = 'Super Computer';
             addName(player2, player2Span, player2Name);
         });
@@ -152,13 +152,9 @@ const ticTacToe = (function(){
         p.textContent = text;
 
         button.addEventListener('click', () => {
-            div.remove();
-            boardScreen.style.display = 'block';
+            setScreen();
             player2Play = true;
             computerPlay = false;
-            resetSquares();
-            addClass(player1, 'active');
-            removeClass(player2, 'active');
             getPlayer1Name();
             if(!player2Name || player2Name === 'Super Computer'){
                 player2Name = prompt('whats player2\'s name');
@@ -166,13 +162,9 @@ const ticTacToe = (function(){
             addName(player2, player2Span, player2Name);
         });
         button2.addEventListener('click', () => {
-            div.remove();
-            boardScreen.style.display = 'block';
+            setScreen();
             player1Active = true;
             computerPlay = true;
-            resetSquares();
-            addClass(player1, 'active');
-            removeClass(player2, 'active');
             getPlayer1Name();
             player2Name = 'Super Computer';
             addName(player2, player2Span, player2Name);
