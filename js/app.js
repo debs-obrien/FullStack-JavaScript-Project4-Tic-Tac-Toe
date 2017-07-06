@@ -122,7 +122,7 @@ const ticTacToe = (function () {
         div.setAttribute('id', 'start');
         button.textContent = 'Play against opponent';
         createButton2();
-//when play game against opponent is clicked
+        //when play game against opponent is clicked
         button.addEventListener('click', () => {
             setScreen();
             getPlayer1Name();
@@ -132,7 +132,7 @@ const ticTacToe = (function () {
             }
             addName(player2, player2Span, player2Name);
         });
- //when play game against computer is clicked
+        //when play game against computer is clicked
         button2.addEventListener('click', () => {
             setScreen();
             getPlayer1Name();
@@ -160,7 +160,7 @@ const ticTacToe = (function () {
             button2.textContent = 'try beat the computer';
         }
         p.textContent = text;
-//when play game against opponent is clicked
+        //when play game against opponent is clicked
         button.addEventListener('click', () => {
             setScreen();
             player2Play = true;
@@ -171,7 +171,7 @@ const ticTacToe = (function () {
             }
             addName(player2, player2Span, player2Name);
         });
- //when play game against computer is clicked
+        //when play game against computer is clicked
         button2.addEventListener('click', () => {
             setScreen();
             player1Active = true;
@@ -181,8 +181,8 @@ const ticTacToe = (function () {
             addName(player2, player2Span, player2Name);
         });
     };
-//when its the computers turn
-//while the random number isnt in the remaining squares array get a random number
+    //when its the computers turn
+    //while the random number isnt in the remaining squares array get a random number
     const computersTurn = () => {
         while (!remainingSquares.includes(randomNum)) {
             randomNum = getRandom(remainingSquares.length);
@@ -226,10 +226,10 @@ const ticTacToe = (function () {
                 return true;
             }
         }
-//if square is clicked and is empty
+        //if square is clicked and is empty
         square.addEventListener('click', function (e) {
             if (isEmpty(e.target)) {
-//if its player ones turn, claim square clicked, remove from remaining squares array, turn over
+                //if its player ones turn, claim square clicked, remove from remaining squares array, turn over
                 if (player1Active) {
                     addClass(e.target, 'box-filled-1');
                     calculateScore();
@@ -271,11 +271,11 @@ const ticTacToe = (function () {
     };
 
 
-//check if wins array includes playersScore
-//the & operator Performs the AND operation on each pair of bits
-// Each bit in the first operand is paired with the corresponding bit in the second operand
-//a simple array.includes would not have worked here as includes would only work if player selected 3 winning
-//squares whereas to win he might have to select up to 5 squares therefore the & operator works best here
+    //check if wins array includes playersScore
+    //the & operator Performs the AND operation on each pair of bits
+    // Each bit in the first operand is paired with the corresponding bit in the second operand
+    //a simple array.includes would not have worked here as includes would only work if player selected 3 winning
+    //squares whereas to win he might have to select up to 5 squares therefore the & operator works best here
     const checkIfWinner = () => {
 
         for (let i = 0; i < squares.length; i++) {
@@ -292,7 +292,7 @@ const ticTacToe = (function () {
         }
     };
 
-//hide board game and call start function
+    //hide board game and call start function
 
     boardScreen.style.display = 'none';
     startGame();
