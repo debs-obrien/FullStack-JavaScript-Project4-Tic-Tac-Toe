@@ -173,8 +173,6 @@ const ticTacToe = (function(){
             boardScreen.style.display = 'block';
             player1Active = true;
             computerPlay = true;
-            addClass(player1, 'active');
-            removeClass(player2, 'active');
             resetSquares();
             addClass(player1, 'active');
             removeClass(player2, 'active');
@@ -204,10 +202,7 @@ const ticTacToe = (function(){
                 break;
             }
         }
-
         turn('active');
-        console.log(player1Active)
-
     };
 
     //function to take turns
@@ -221,7 +216,6 @@ const ticTacToe = (function(){
                 removeClass(player2, className);
                 player1Active = true;
             }
-
     };
 
     //check to see if square is empty and if it is fill it
@@ -282,18 +276,15 @@ const checkIfWinner = ()  => {
         if ((wins[i] & player1Score) === wins[i]) {
             win = true;
             endGame('screen-win-one', 'Winner is ' + player1Name);
-
         } else if ((wins[i] & player2Score) === wins[i]) {
             win = true;
             endGame('screen-win-two', 'Winner is ' + player2Name);
-
         }
     }
     if (!win && squaresFilled === 9) {
         endGame('screen-win-tie', 'Tie')
     }
 };
-
 
 //hide board game and call start function
 
