@@ -217,12 +217,12 @@ const ticTacToe = (function () {
     //these are the possible win scores for each box across, down and diagonal
     let boxWin0 = [6, 72, 272];
     let boxWin1 = [144];
-    let boxWin2 = [3, 82, 288];
+    let boxWin2 = [3, 80, 288];
     let boxWin3 = [65, 48];
-    let boxWin4 = [130];
-    let boxWin5 = [24];
+    let boxWin4 = [257, 68, 40, 130];
+    let boxWin5 = [24, 260];
     let boxWin6 = [9, 20, 384];
-    let boxWin7 = [18];
+    let boxWin7 = [18, 320];
     let boxWin8 = [36, 17, 192];
     //start by letting the boxClaimed to false as the computer hasnt claimed a box yet
     let boxClaimed = false;
