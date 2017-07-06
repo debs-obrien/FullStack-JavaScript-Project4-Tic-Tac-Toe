@@ -220,7 +220,7 @@ const ticTacToe = (function () {
         //turn over change to player1
         turn('active');
     };
-    
+
     //check to see if square is empty and if it is fill it
     const isSquareEmpty = () => {
         function isEmpty(box) {
