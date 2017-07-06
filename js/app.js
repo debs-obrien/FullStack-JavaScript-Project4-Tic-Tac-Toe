@@ -15,6 +15,7 @@ const ticTacToe = (function () {
     const button = document.createElement('a');
     const button2 = document.createElement('a');
     const p = document.createElement('p');
+    const form = document.createElement('form');
     const player1Span = document.createElement('span');
     const player2Span = document.createElement('span');
     let player1Score = 0;
@@ -29,6 +30,7 @@ const ticTacToe = (function () {
     let randomNum;
     let player1Name;
     let player2Name;
+    let gameLevel = 'easy';
 
     //creates the second button to play against the computer
     function createButton2() {
@@ -129,6 +131,20 @@ const ticTacToe = (function () {
         header.appendChild(p);
         header.appendChild(button);
     }
+    function createRadioButtons(level, text){
+        const radio = document.createElement('INPUT');
+        const label = document.createElement('label');
+        radio.type = 'radio';
+        radio.setAttribute('class', 'radio');
+        radio.setAttribute('name', 'level');
+        radio.id = 'level';
+        radio.value = level;
+        label.setAttribute('for', 'level');
+        label.textContent = text;
+        header.appendChild(form);
+        form.appendChild(label);
+        form.appendChild(radio);
+    }
 
     //add the names span to the boxes at top of screen
     function addName(player, span, name) {
@@ -169,16 +185,32 @@ const ticTacToe = (function () {
         squaresFilled += 1;
         turn('active');
     }
-
+    function getRadioCheckedValue(){
+        let levels = document.getElementsByName('level');
+        for(let i = 0; i < levels.length; i++){
+            if(levels[i].checked)
+            {
+                return levels[i].value;
+            }
+        }
+    }
     //function to start the game showing screen and button to click to start
-    const startGame = () => {
+    const startGame = (gameLevel) => {
         createScreen();
         p.remove();
         div.className += ' screen-start';
         div.setAttribute('id', 'start');
         button.textContent = 'Play against opponent';
         createButton2();
+        createRadioButtons('easy', 'Easy');
+        createRadioButtons('medium', 'Medium');
+        createRadioButtons('impossible', 'Impossible');
         //when play game against opponent is clicked
+
+        form.addEventListener('click', () => {
+            gameLevel = getRadioCheckedValue();
+            console.log(gameLevel);
+        });
         button.addEventListener('click', () => {
             playAgain();
         });
@@ -216,15 +248,28 @@ const ticTacToe = (function () {
     };
     //these are the possible win scores for each box across, down and diagonal
     //delete a few of these values if you want to make the game a bit easier
-    let boxWin0 = [6, 72, 272];
-    let boxWin1 = [144, 5];
-    let boxWin2 = [3, 80, 288];
-    let boxWin3 = [65, 48];
-    let boxWin4 = [257, 68, 40, 130];
-    let boxWin5 = [24, 260];
-    let boxWin6 = [9, 20, 384];
-    let boxWin7 = [18, 320];
-    let boxWin8 = [36, 17, 192];
+    let boxWin0 = [];
+    let boxWin1 = [];
+    let boxWin2 = [];
+    let boxWin3 = [];
+    let boxWin4 = [];
+    let boxWin5 = [];
+    let boxWin6 = [];
+    let boxWin7 = [];
+    let boxWin8 = [];
+    console.log(gameLevel);
+    if(gameLevel !== 'easy'){
+        boxWin0 = [6, 72, 272];
+        boxWin1 = [144, 5];
+        boxWin2 = [3, 80, 288];
+        boxWin3 = [65, 48];
+        boxWin4 = [257, 68, 40, 130];
+        boxWin5 = [24, 260];
+        boxWin6 = [9, 20, 384];
+        boxWin7 = [18, 320];
+        boxWin8 = [36, 17, 192];
+    }
+
     //start by letting the boxClaimed to false as the computer hasnt claimed a box yet
     let boxClaimed = false;
     //this will help the computer win or defend
