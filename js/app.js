@@ -89,7 +89,7 @@ const ticTacToe = (function () {
     }
 
     //if the game has been played reset all the values
-    const resetSquares = () => {
+    function resetSquares(){
         player1Score = 0;
         player2Score = 0;
         squaresFilled = 0;
@@ -103,11 +103,10 @@ const ticTacToe = (function () {
             removeClass(squares[i], 'box-filled-1');
             removeClass(squares[i], 'box-filled-2');
         }
-
-    };
+    }
 
     //create the start and end screens
-    const createScreen = () => {
+    function createScreen(){
         div.className = 'screen screen-win ';
         h1.textContent = 'Tic Tac Toe';
         button.setAttribute('href', '#');
@@ -118,12 +117,12 @@ const ticTacToe = (function () {
         header.appendChild(h1);
         header.appendChild(p);
         header.appendChild(button);
-    };
-    const addName = (player, span, name) => {
+    }
+    function addName(player, span, name){
         player.appendChild(span);
         span.setAttribute('class', 'name');
         span.textContent = name;
-    };
+    }
     function playAgain(){
         setScreen();
         player2Play = true;
