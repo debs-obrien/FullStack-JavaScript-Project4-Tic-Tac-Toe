@@ -196,20 +196,86 @@ const ticTacToe = (function () {
             playAgainComputer();
         });
     };
+    let boxWin0 = [6, 72, 272];
+    let boxWin1 = [144];
+    let boxWin2 = [3, 82, 288];
+    let boxWin3 = [65, 48];
+    let boxWin4 = [130];
+    let boxWin5 = [24];
+    let boxWin6 = [9, 20, 384];
+    let boxWin7 = [18];
+    let boxWin8 = [36, 17, 192];
+    let boxClaimed = false;
+
+    function winOrDefend(boxWinArray, box) {
+        for (let i = 0; i < squares.length; i++) {
+            if ((boxWinArray[i] & player1Score) === boxWinArray[i] || (boxWinArray[i] & player2Score) === boxWinArray[i]) {
+                boxClaimed = true;
+                addClass(squares[box], 'box-filled-2');
+                calculateScore();
+                squaresFilled += 1;
+                player2Score += squares[box].value;
+                removeSquare(box);
+                checkIfWinner();
+                console.log('defence option ' +box);
+            }
+
+        }
+    }
     //when its the computers turn
     //while the random number isnt in the remaining squares array get a random number
     const computersTurn = () => {
-        while (!remainingSquares.includes(randomNum)) {
+        while (!boxClaimed) {
+            switch(true){
+                case (remainingSquares.includes(0)):
+                    winOrDefend(boxWin0, 0);
+                    console.log('it checked 0');
+                    break;
+                case (remainingSquares.includes(1)):
+                    winOrDefend(boxWin1, 1);
+                    console.log('it checked 1');
+                    break;
+                case (remainingSquares.includes(2)):
+                    winOrDefend(boxWin2, 2);
+                    console.log('it checked 2');
+                    break;
+                case (remainingSquares.includes(3)):
+                    winOrDefend(boxWin3, 3);
+                    console.log('it checked 3');
+                    break;
+                case (remainingSquares.includes(4)):
+                    winOrDefend(boxWin4, 4);
+                    console.log('it checked 4');
+                    break;
+                case (remainingSquares.includes(5)):
+                    winOrDefend(boxWin5, 5);
+                    console.log('it checked 5');
+                    break;
+                case (remainingSquares.includes(6)):
+                    winOrDefend(boxWin6, 6);
+                    console.log('it checked 6');
+                    break;
+                case (remainingSquares.includes(7)):
+                    winOrDefend(boxWin7, 7);
+                    console.log('it checked 7');
+                    break;
+                case (remainingSquares.includes(8)):
+                    winOrDefend(boxWin8, 8);
+                    console.log('it checked 8');
+                    break;
+            }
             randomNum = getRandom(remainingSquares.length);
             randomNum = remainingSquares[randomNum];
             //if the random number is in the remaining squares array, claim square and remove
-            if (remainingSquares.includes(randomNum)) {
+            if (!boxClaimed && remainingSquares.includes(randomNum)) {
                 addClass(squares[randomNum], 'box-filled-2');
                 calculateScore();
                 squaresFilled += 1;
                 player2Score += squares[randomNum].value;
                 removeSquare(randomNum);
                 checkIfWinner();
+                boxClaimed = true;
+                console.log('it took random ' +randomNum);
                 break;
                 //if there are no remaining squares check if winner
             } else if (remainingSquares.length === 0) {
@@ -240,6 +306,7 @@ const ticTacToe = (function () {
 
                     //if playing against the computer call the computers turn
                     if (computerPlay) {
+                        boxClaimed = false;
                         computersTurn(); //if playing against the computer then call computers turn
                     }
                     //if playing against player 2 let player 2 click and claim square
