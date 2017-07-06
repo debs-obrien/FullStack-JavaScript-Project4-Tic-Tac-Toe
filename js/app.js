@@ -54,7 +54,7 @@ const ticTacToe = (function () {
         let index = remainingSquares.indexOf(square);
         remainingSquares.splice(index, 1);
     }
-    //calculte the score of the square by making each square equal to the power of 2
+    //calculate the score of the square by making each square equal to the power of 2
     function calculateScore() {
         for (let i = 0; i < squares.length; i++) {
             squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
@@ -74,6 +74,18 @@ const ticTacToe = (function () {
         resetSquares();
         addClass(player1, 'active');
         removeClass(player2, 'active');
+    }
+    //function to take turns
+    function turn(className){
+        if (player1Active) {
+            removeClass(player1, className);
+            addClass(player2, className);
+            player1Active = false;
+        } else {
+            addClass(player1, className);
+            removeClass(player2, className);
+            player1Active = true;
+        }
     }
 
     //if the game has been played reset all the values
@@ -112,6 +124,24 @@ const ticTacToe = (function () {
         span.setAttribute('class', 'name');
         span.textContent = name;
     };
+    function playAgain(){
+        setScreen();
+        player2Play = true;
+        computerPlay = false;
+        getPlayer1Name();
+        if (!player2Name || player2Name === 'Super Computer') {
+            player2Name = prompt('whats player2\'s name');
+        }
+        addName(player2, player2Span, player2Name);
+    }
+    function playAgainComputer(){
+        setScreen();
+        getPlayer1Name();
+        player1Active = true;
+        computerPlay = true;
+        player2Name = 'Super Computer';
+        addName(player2, player2Span, player2Name);
+    }
 
 
     //function to start the game showing screen and button to click to start
@@ -124,22 +154,11 @@ const ticTacToe = (function () {
         createButton2();
         //when play game against opponent is clicked
         button.addEventListener('click', () => {
-            setScreen();
-            getPlayer1Name();
-            player2Play = true;
-            if (!player2Name) {
-                player2Name = prompt('whats player2\'s name');
-            }
-            addName(player2, player2Span, player2Name);
+            playAgain();
         });
         //when play game against computer is clicked
         button2.addEventListener('click', () => {
-            setScreen();
-            getPlayer1Name();
-            player1Active = true;
-            computerPlay = true;
-            player2Name = 'Super Computer';
-            addName(player2, player2Span, player2Name);
+            playAgainComputer();
         });
 
     };
@@ -162,23 +181,11 @@ const ticTacToe = (function () {
         p.textContent = text;
         //when play game against opponent is clicked
         button.addEventListener('click', () => {
-            setScreen();
-            player2Play = true;
-            computerPlay = false;
-            getPlayer1Name();
-            if (!player2Name || player2Name === 'Super Computer') {
-                player2Name = prompt('whats player2\'s name');
-            }
-            addName(player2, player2Span, player2Name);
+            playAgain();
         });
         //when play game against computer is clicked
         button2.addEventListener('click', () => {
-            setScreen();
-            player1Active = true;
-            computerPlay = true;
-            getPlayer1Name();
-            player2Name = 'Super Computer';
-            addName(player2, player2Span, player2Name);
+            playAgainComputer();
         });
     };
     //when its the computers turn
@@ -206,18 +213,7 @@ const ticTacToe = (function () {
         turn('active');
     };
 
-    //function to take turns
-    const turn = (className) => {
-        if (player1Active) {
-            removeClass(player1, className);
-            addClass(player2, className);
-            player1Active = false;
-        } else {
-            addClass(player1, className);
-            removeClass(player2, className);
-            player1Active = true;
-        }
-    };
+
 
     //check to see if square is empty and if it is fill it
     const isSquareEmpty = () => {
