@@ -3,6 +3,7 @@
 
   - play against an opponent
   - play against the computer
+  - added different levels of play for more fun
 
  By Debbie O'Brien
  6 July 2017
