@@ -138,6 +138,7 @@ const ticTacToe = (function () {
         label.setAttribute('for', 'level');
         label.textContent = text;
     }
+
     function getRadioCheckedValue() {
         let levels = document.getElementsByName('level');
         for (let i = 0; i < levels.length; i++) {
@@ -146,6 +147,7 @@ const ticTacToe = (function () {
             }
         }
     }
+
     function chooseOpponent() {
         //when play game against opponent is clicked
         button.addEventListener('click', () => {
@@ -236,6 +238,7 @@ const ticTacToe = (function () {
             squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
         }
     }
+
     //if you click on the square to claim it
     function squareClaimed(e, boxClass) {
         addClass(e.target, boxClass);
@@ -243,6 +246,7 @@ const ticTacToe = (function () {
         squaresFilled += 1;
 
     }
+
     //removes the square that has been clicked from the remaining squares array so as computer knows which
     // squares he can click on.
     function removeSquare(square) {
@@ -277,7 +281,6 @@ const ticTacToe = (function () {
         button.textContent = 'Play against opponent';
         chooseOpponent()
     };
-
 
     function calculateMediumLevel() {
         boxWins[getRandom(9)] = [];
@@ -321,7 +324,6 @@ const ticTacToe = (function () {
         }
     }
 
-
     //check to see if the computer can win or defend
     function winOrDefend(boxWinArray, box, player) {
         for (let i = 0; i < squares.length; i++) {
@@ -346,6 +348,7 @@ const ticTacToe = (function () {
             randomNum = remainingSquares[randomNum];
         }
     }
+
     //this will help the computer win or defend
     //when computer claims a square do this
     function claimSquare(box) {
