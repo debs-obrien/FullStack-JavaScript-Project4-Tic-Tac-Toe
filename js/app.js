@@ -32,6 +32,7 @@ const ticTacToe = (function () {
     let squaresFilled = 0;
     let win = false;
     let remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+    let outsideSquares = [0, 2, 4, 6, 8];
     let player1Active = true;
     let player2Play = false;
     let computerPlay = false;
@@ -39,6 +40,7 @@ const ticTacToe = (function () {
     let player1Name;
     let player2Name;
     let gameLevel;
+    let boxClaimed = false;
     //these are the possible win scores for each box across, down and diagonal
     //these have been calculated by making each square equal to the power of 2
     // values for each box
@@ -46,6 +48,7 @@ const ticTacToe = (function () {
     // |  8 |  16 |  32 |
     // | 64 | 128 | 256 |
     let squaresValue = [1, 2, 4, 8, 16, 32, 64, 128, 256];
+
     //these are the possible win options for each square
     //the first square can be won by occupying the 2 squares across with a value of 2 and 4 = 6
     //or by down occupying the square with value of 8 and 64 = 72
@@ -79,20 +82,6 @@ const ticTacToe = (function () {
         from.classList.add(className);
     }
 
-    //removes the square that has been clicked from the remaining squares array so as computer knows which
-    // squares he can click on.
-    function removeSquare(square) {
-        let index = remainingSquares.indexOf(square);
-        remainingSquares.splice(index, 1);
-    }
-
-    //calculate the score of the square by making each square equal to the power of 2
-    function calculateScore() {
-        for (let i = 0; i < squares.length; i++) {
-            squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
-        }
-    }
-
     // get the players name by using prompt or if they dont want to give a name make the name Player 1
     function getPlayer1Name() {
         if (!player1Name) {
@@ -114,7 +103,7 @@ const ticTacToe = (function () {
         removeClass(player2, 'active');
     }
 
-    //function to take turns
+    //function to change the active class and change turn
     function turn(className) {
         if (player1Active) {
             removeClass(player1, className);
@@ -143,10 +132,36 @@ const ticTacToe = (function () {
         radio.type = 'radio';
         radio.setAttribute('class', 'radio');
         radio.setAttribute('name', 'level');
+        radio.setAttribute('required', 'required');
         radio.id = 'level';
         radio.value = level;
         label.setAttribute('for', 'level');
         label.textContent = text;
+    }
+    function getRadioCheckedValue() {
+        let levels = document.getElementsByName('level');
+        for (let i = 0; i < levels.length; i++) {
+            if (levels[i].checked) {
+                return levels[i].value;
+            }
+        }
+    }
+    function chooseOpponent() {
+        //when play game against opponent is clicked
+        button.addEventListener('click', () => {
+            playAgain();
+        });
+        //when play game against computer is clicked show the choose level options
+        button2.addEventListener('click', () => {
+            form.style.visibility = 'visible';
+            //playAgainComputer(gameLevel);
+        });
+        //get level of game when radio is clicked
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            gameLevel = getRadioCheckedValue();
+            playAgainComputer();
+        });
     }
 
     //create the start and end screens
@@ -192,6 +207,7 @@ const ticTacToe = (function () {
         setScreen();
         player2Play = true;
         computerPlay = false;
+        player1Active = true;
         getPlayer1Name();
         if (!player2Name || player2Name === 'Super Computer') {
             player2Name = prompt('whats player2\'s name');
@@ -211,25 +227,27 @@ const ticTacToe = (function () {
         addName(player2, player2Span, player2Name);
         gameLevels();
         computersTurn(); //if playing against the computer then call computers turn
-        //turn('active');
         player1Active = true;
     }
 
+    //calculate the score of the square by making each square equal to the power of 2
+    function calculateScore() {
+        for (let i = 0; i < squares.length; i++) {
+            squares[i].value = (Math.pow(2, i)); //let the square = to square to the power of 2
+        }
+    }
     //if you click on the square to claim it
     function squareClaimed(e, boxClass) {
         addClass(e.target, boxClass);
         calculateScore();
         squaresFilled += 1;
-        turn('active');
-    }
 
-    function getRadioCheckedValue() {
-        let levels = document.getElementsByName('level');
-        for (let i = 0; i < levels.length; i++) {
-            if (levels[i].checked) {
-                return levels[i].value;
-            }
-        }
+    }
+    //removes the square that has been clicked from the remaining squares array so as computer knows which
+    // squares he can click on.
+    function removeSquare(square) {
+        let index = remainingSquares.indexOf(square);
+        remainingSquares.splice(index, 1);
     }
 
     //if the game has been played reset all the values
@@ -237,9 +255,6 @@ const ticTacToe = (function () {
         player1Score = 0;
         player2Score = 0;
         squaresFilled = 0;
-        //player1Active = true;
-        //addClass(player1, 'active');
-        //removeClass(player2, 'active');
         win = false;
         remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         randomNum = 10;
@@ -253,24 +268,6 @@ const ticTacToe = (function () {
         }
     }
 
-    function chooseOpponent() {
-        //when play game against opponent is clicked
-        button.addEventListener('click', () => {
-            playAgain();
-        });
-        //when play game against computer is clicked show the choose level options
-        button2.addEventListener('click', () => {
-            form.style.visibility = 'visible';
-            //playAgainComputer(gameLevel);
-        });
-        //get level of game when radio is clicked
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            gameLevel = getRadioCheckedValue();
-            playAgainComputer();
-        });
-    }
-
     //function to start the game showing screen and button to click to start
     const startGame = () => {
         createScreen();
@@ -280,25 +277,7 @@ const ticTacToe = (function () {
         button.textContent = 'Play against opponent';
         chooseOpponent()
     };
-    //function at end of the game showing screen and button to click to start again
-    const endGame = (screenClass, text) => {
-        resetSquares();
-        createScreen();
-        boardScreen.style.display = 'none';
 
-        div.className += screenClass;
-        div.setAttribute('id', 'finish');
-        //change the text of the buttons after the game
-        if (computerPlay) {
-            button2.textContent = 'play again against computer';
-            button.textContent = 'try a game against an opponent';
-        } else {
-            button.textContent = 'play again';
-            button2.textContent = 'try beat the computer';
-        }
-        p.textContent = text;
-        chooseOpponent()
-    };
 
     function calculateMediumLevel() {
         boxWins[getRandom(9)] = [];
@@ -342,8 +321,31 @@ const ticTacToe = (function () {
         }
     }
 
-    //start by letting the boxClaimed to false as the computer hasnt claimed a box yet
-    let boxClaimed = false;
+
+    //check to see if the computer can win or defend
+    function winOrDefend(boxWinArray, box, player) {
+        for (let i = 0; i < squares.length; i++) {
+            if ((boxWinArray[i] & player) === boxWinArray[i]) {
+                claimSquare(box);
+            }
+        }
+    }
+
+    //if we cant win or dont need to defend we can attack
+    //if middle square is free claim it
+    //if not take a random outside squares
+    //else just take any random square
+    function attack() {
+        if (remainingSquares.includes(4)) {
+            randomNum = 4;
+        } else if (squaresFilled < 6) {
+            randomNum = getRandom(outsideSquares.length);
+            randomNum = outsideSquares[randomNum];
+        } else {
+            randomNum = getRandom(remainingSquares.length);
+            randomNum = remainingSquares[randomNum];
+        }
+    }
     //this will help the computer win or defend
     //when computer claims a square do this
     function claimSquare(box) {
@@ -354,17 +356,6 @@ const ticTacToe = (function () {
         player2Score += squares[box].value;
         removeSquare(box);
         checkIfWinner();
-        turn('active');
-    }
-
-    //check to see if the computer can win or defend
-    function winOrDefend(boxWinArray, box, player) {
-
-        for (let i = 0; i < squares.length; i++) {
-            if ((boxWinArray[i] & player) === boxWinArray[i]) {
-                claimSquare(box);
-            }
-        }
     }
 
     //when its the computers turn
@@ -374,14 +365,13 @@ const ticTacToe = (function () {
 
             for (let i = 0; i < boxWins.length; i++) {
                 if (!boxClaimed && remainingSquares.includes(i)) {
-
                     winOrDefend(boxWins[i], i, player2Score); //check to see if he can win
                     winOrDefend(boxWins[i], i, player1Score); //check if he needs to defend
+
                 }
             }
-            //so the computer couldnt win or didnt need to defend so just go random
-            randomNum = getRandom(remainingSquares.length);
-            randomNum = remainingSquares[randomNum];
+            attack();
+
             //if the random number is in the remaining squares array, claim square and remove
             if (!boxClaimed && remainingSquares.includes(randomNum)) {
                 claimSquare(randomNum);
@@ -392,8 +382,6 @@ const ticTacToe = (function () {
                 break;
             }
         }
-        //turn over - change to player1
-        //turn('active');
     };
 
     //check to see if square is empty and if it is fill it
@@ -413,18 +401,20 @@ const ticTacToe = (function () {
                     player1Score += e.target.value;
                     checkIfWinner();
                     removeSquare(squaresValue.indexOf(e.target.value)); //find out the index of the square clicked
-
+                    turn('active');
                     //if playing against the computer call the computers turn
                     if (computerPlay) {
                         boxClaimed = false;
                         gameLevels();
                         computersTurn(); //if playing against the computer then call computers turn
+                        turn('active');
                     }
                     //if playing against player 2 let player 2 click and claim square
                 } else if (player2Play) {
                     squareClaimed(e, 'box-filled-2');
                     player2Score += e.target.value;
                     checkIfWinner();
+                    turn('active');
                 }
             }
 
@@ -465,12 +455,29 @@ const ticTacToe = (function () {
             endGame('screen-win-tie', 'Tie')
         }
     };
+    //function at end of the game showing screen and button to click to start again
+    const endGame = (screenClass, text) => {
+        resetSquares();
+        createScreen();
+        boardScreen.style.display = 'none';
+
+        div.className += screenClass;
+        div.setAttribute('id', 'finish');
+        //change the text of the buttons after the game
+        if (computerPlay) {
+            button2.textContent = 'play again against computer';
+            button.textContent = 'try a game against an opponent';
+        } else {
+            button.textContent = 'play again';
+            button2.textContent = 'try beat the computer';
+        }
+        p.textContent = text;
+        chooseOpponent()
+    };
 
     //hide board game and call start function
-
     boardScreen.style.display = 'none';
     startGame();
-    gameLevels();
     isSquareEmpty();
 
 }()); //end of main function
