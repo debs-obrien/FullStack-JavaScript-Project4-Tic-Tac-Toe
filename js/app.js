@@ -9,22 +9,24 @@ const ticTacToe = (function () {
     const squares = document.getElementsByClassName("box");
     const boardScreen = document.getElementById('board');
     const wins = [7, 56, 448, 73, 146, 292, 273, 84];
-    const div = document.createElement('div');
-    const header = document.createElement('header');
-    const h1 = document.createElement('h1');
-    const button = document.createElement('a');
-    const button2 = document.createElement('a');
-    const buttonLevel = document.createElement('a');
-    const p = document.createElement('p');
-    const form = document.createElement('form');
+    const div = document.createElement('DIV');
+    const header = document.createElement('HEADER');
+    const h1 = document.createElement('H1');
+    const button = document.createElement('A');
+    const button2 = document.createElement('A');
+    const buttonLevel = document.createElement('A');
+    const p = document.createElement('P');
+    const form = document.createElement('FORM');
     const radio1 = document.createElement('INPUT');
     const label1 = document.createElement('LABEL');
     const radio2 = document.createElement('INPUT');
     const label2 = document.createElement('LABEL');
     const radio3 = document.createElement('INPUT');
     const label3 = document.createElement('LABEL');
-    const player1Span = document.createElement('span');
-    const player2Span = document.createElement('span');
+    const radio4 = document.createElement('INPUT');
+    const label4 = document.createElement('LABEL');
+    const player1Span = document.createElement('SPAN');
+    const player2Span = document.createElement('SPAN');
     let player1Score = 0;
     let player2Score = 0;
     let squaresFilled = 0;
@@ -37,7 +39,20 @@ const ticTacToe = (function () {
     let randomNum;
     let player1Name;
     let player2Name;
-    let gameLevel = 'medium';
+    let gameLevel = 'difficult';
+    //these are the possible win scores for each box across, down and diagonal
+    let boxWinOptions = [
+        [6, 72, 272],
+        [144, 5],
+        [3, 80, 288],
+        [65, 48],
+        [257, 68, 40, 130],
+        [24, 260],
+        [9, 20, 384],
+        [18, 320],
+        [36, 17, 192]
+    ];
+    let boxWins = ['boxWin1', 'boxWin1', 'boxWin2', 'boxWin3', 'boxWin4', 'boxWin5', 'boxWin6', 'boxWin7', 'boxWin8'];
 
 
 
@@ -135,7 +150,8 @@ const ticTacToe = (function () {
         createButton(button2, 'button button2', 'Play against Computer');
         createRadioButtons(radio1, label1, 'easy', 'Easy');
         createRadioButtons(radio2, label2, 'medium', 'Medium');
-        createRadioButtons(radio3, label3, 'impossible', 'Impossible');
+        createRadioButtons(radio3, label3, 'difficult', 'Difficult');
+        createRadioButtons(radio4, label4, 'impossible', 'Impossible');
         header.appendChild(form);
         form.style.visibility = 'hidden';
         form.appendChild(label1);
@@ -207,6 +223,18 @@ const ticTacToe = (function () {
         win = false;
         remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         randomNum = 10;
+        boxWinOptions = [
+            [6, 72, 272],
+            [144, 5],
+            [3, 80, 288],
+            [65, 48],
+            [257, 68, 40, 130],
+            [24, 260],
+            [9, 20, 384],
+            [18, 320],
+            [36, 17, 192]
+        ];
+
         for (let i = 0; i < squares.length; i++) {
             removeClass(squares[i], 'box-filled-1');
             removeClass(squares[i], 'box-filled-2');
@@ -260,76 +288,58 @@ const ticTacToe = (function () {
         p.textContent = text;
         chooseOpponent()
     };
-    //these are the possible win scores for each box across, down and diagonal
-    //delete a few of these values if you want to make the game a bit easier
-    console.log(gameLevel);
-    //if game is easy there are no win scores so random numbers will always be selected
-    //if game is medium there some possible win scores removed from array
-    //if game is impossible there are no possibilities to win. computer is too clever
-        let boxWin0 = [];
-        let boxWin1 = [];
-        let boxWin2 = [];
-        let boxWin3 = [];
-        let boxWin4 = [];
-        let boxWin5 = [];
-        let boxWin6 = [];
-        let boxWin7 = [];
-        let boxWin8 = [];
-
-    if(gameLevel === 'medium'){
-        //get 2 random values
-        let boxOption1 = getRandom(9);
-        let boxOption2 = getRandom(9);
-        let boxValue1 = getRandom(2);
-        let boxValue2 = getRandom(2);
-
-
-        console.log(boxOption1)
-        console.log(boxOption2)
-            let boxWinOptions = [
-                [6, 72, 272],
-                [144, 5],
-                [3, 80, 288],
-                [65, 48],
-                [257, 68, 40, 130],
-                [24, 260],
-                [9, 20, 384],
-                [18, 320],
-                [36, 17, 192]
-            ];
-            boxWinOptions[boxOption1].splice(1, boxValue1);
-            boxWinOptions[boxOption2].splice(1, boxValue2);
-            console.log(boxWinOptions[boxOption1])
-        console.log(boxWinOptions[boxOption2])
-
-            //console.log(boxWinOptions[boxOption1][1]);  //to delete the numbers
-            //console.log(boxWinOptions[boxOption2][1]);  //to delete the numbers
-
-            boxWin0 = boxWinOptions[0];
-            boxWin1 = boxWinOptions[1];
-            boxWin2 = boxWinOptions[2];
-            boxWin3 = boxWinOptions[3];
-            boxWin4 = boxWinOptions[4];
-            boxWin5 = boxWinOptions[5];
-            boxWin6 = boxWinOptions[6];
-            boxWin7 = boxWinOptions[7];
-            boxWin8 = boxWinOptions[8];
-
-
-            //remove their values or some of their values
-
-
-    }else if(gameLevel === 'impossible'){
-        boxWin0 = [6, 72, 272];
-        boxWin1 = [144, 5];
-        boxWin2 = [3, 80, 288];
-        boxWin3 = [65, 48];
-        boxWin4 = [257, 68, 40, 130];
-        boxWin5 = [24, 260];
-        boxWin6 = [9, 20, 384];
-        boxWin7 = [18, 320];
-        boxWin8 = [36, 17, 192];
+    function calculateMediumLevel(){
+        boxWins[getRandom(9)]=[];
+        boxWins[getRandom(9)]=[];
     }
+    function calculateDifficultLevel(){
+        boxWinOptions[getRandom(9)].splice(1, getRandom(2));
+    }
+
+    console.log('the game level is' + gameLevel);
+
+    if(gameLevel === 'easy'){
+        //if level easy is set make the possible wins equal to an empty array then
+        //when computer plays there will be no defend or win options so he will
+        //always choose a random number
+        for(let i = 0; i < boxWins.length; i++){
+            boxWins[i] = [];
+
+            console.log(boxWins[i])
+        }
+        console.log('easy');
+    }
+    else if(gameLevel === 'medium'){
+        //to make the level medium empty two of the possible win boxes
+        for(let i = 0; i < boxWins.length; i++){
+            boxWins[i] = boxWinOptions[i];
+
+            calculateMediumLevel();
+            console.log(boxWins[i]);
+        }
+        console.log('medium');
+
+    }else if(gameLevel === 'difficult'){
+        //to make it difficult empty one value from 4 boxes
+        //the random number may repeat itself which will make it more difficult
+
+        for(let i = 0; i < boxWins.length; i++){
+            boxWins[i] = boxWinOptions[i];
+            calculateDifficultLevel();
+            console.log(boxWins[i]);
+        }
+        console.log('difficult');
+    }
+    else if(gameLevel === 'impossible'){
+        //if its impossible make the box wins equal to the array with all possible win values
+        for(let i = 0; i < boxWins.length; i++){
+            boxWins[i] = boxWinOptions[i];
+
+            console.log(boxWins[i]);
+        }
+        console.log('impossible');
+    }
+
 
     //start by letting the boxClaimed to false as the computer hasnt claimed a box yet
     let boxClaimed = false;
@@ -344,18 +354,13 @@ const ticTacToe = (function () {
         removeSquare(box);
         checkIfWinner();
     }
-    function tryToWin(boxWinArray, box) {
-        for (let i = 0; i < squares.length; i++) {
-            if ((boxWinArray[i] & player2Score) === boxWinArray[i]) {
-                claimSquare(box)
-            }
-        }
-    }
+    //check to see if the computer can win or defend
+    function WinOrDefend(boxWinArray, box, player) {
 
-    function needToDefend(boxWinArray, box) {
         for (let i = 0; i < squares.length; i++) {
-            if ((boxWinArray[i] & player1Score) === boxWinArray[i]) {
-                claimSquare(box)
+            if ((boxWinArray[i] & player) === boxWinArray[i]) {
+                claimSquare(box);
+                console.log('he defended')
             }
         }
     }
@@ -364,59 +369,13 @@ const ticTacToe = (function () {
     //while no box has been claimed test out all statements until you can claim a box
     const computersTurn = () => {
         while (!boxClaimed) {
-            if (!boxClaimed && remainingSquares.includes(0)) {
-                tryToWin(boxWin0, 0);
-            }
-            if (!boxClaimed && remainingSquares.includes(1)) {
-                tryToWin(boxWin1, 1);
-            }
-            if (!boxClaimed && remainingSquares.includes(2)) {
-                tryToWin(boxWin2, 2);
-            }
-            if (!boxClaimed && remainingSquares.includes(3)) {
-                tryToWin(boxWin3, 3);
-            }
-            if (!boxClaimed && remainingSquares.includes(4)) {
-                tryToWin(boxWin4, 4);
-            }
-            if (!boxClaimed && remainingSquares.includes(5)) {
-                tryToWin(boxWin5, 5);
-            }
-            if (!boxClaimed && remainingSquares.includes(6)) {
-                tryToWin(boxWin6, 6);
-            }
-            if (!boxClaimed && remainingSquares.includes(7)) {
-                tryToWin(boxWin7, 7);
-            }
-            if (!boxClaimed && remainingSquares.includes(8)) {
-                tryToWin(boxWin8, 8);
-            }
-            if (!boxClaimed && remainingSquares.includes(0)) {
-                needToDefend(boxWin0, 0);
-            }
-            if (!boxClaimed && remainingSquares.includes(1)) {
-                needToDefend(boxWin1, 1);
-            }
-            if (!boxClaimed && remainingSquares.includes(2)) {
-                needToDefend(boxWin2, 2);
-            }
-            if (!boxClaimed && remainingSquares.includes(3)) {
-                needToDefend(boxWin3, 3);
-            }
-            if (!boxClaimed && remainingSquares.includes(4)) {
-                needToDefend(boxWin4, 4);
-            }
-            if (!boxClaimed && remainingSquares.includes(5)) {
-                needToDefend(boxWin5, 5);
-            }
-            if (!boxClaimed && remainingSquares.includes(6)) {
-                needToDefend(boxWin6, 6);
-            }
-            if (!boxClaimed && remainingSquares.includes(7)) {
-                needToDefend(boxWin7, 7);
-            }
-            if (!boxClaimed && remainingSquares.includes(8)) {
-                needToDefend(boxWin8, 8);
+
+            for(let i = 0; i < boxWins.length; i++){
+                if (!boxClaimed && remainingSquares.includes(i)) {
+
+                    WinOrDefend(boxWins[i], i, player2Score); //check to see if he can win
+                    WinOrDefend(boxWins[i], i, player1Score); //check if he needs to defend
+                }
             }
             //so the computer couldnt win or didnt need to defend so just go random
             randomNum = getRandom(remainingSquares.length);
