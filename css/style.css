@@ -149,6 +149,15 @@ h1 {
 .button2{
   margin-left:20px;
 }
+form{
+  padding-top:20px;
+}
+form label{
+  padding-right:5px;
+}
+#level{
+  margin-right:30px;
+}
 
 
 

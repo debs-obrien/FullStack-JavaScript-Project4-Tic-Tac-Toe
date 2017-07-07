@@ -14,8 +14,15 @@ const ticTacToe = (function () {
     const h1 = document.createElement('h1');
     const button = document.createElement('a');
     const button2 = document.createElement('a');
+    const buttonLevel = document.createElement('a');
     const p = document.createElement('p');
     const form = document.createElement('form');
+    const radio1 = document.createElement('INPUT');
+    const label1 = document.createElement('LABEL');
+    const radio2 = document.createElement('INPUT');
+    const label2 = document.createElement('LABEL');
+    const radio3 = document.createElement('INPUT');
+    const label3 = document.createElement('LABEL');
     const player1Span = document.createElement('span');
     const player2Span = document.createElement('span');
     let player1Score = 0;
@@ -30,14 +37,9 @@ const ticTacToe = (function () {
     let randomNum;
     let player1Name;
     let player2Name;
-    let gameLevel = 'easy';
+    let gameLevel = 'medium';
 
-    //creates the second button to play against the computer
-    function createButton2() {
-        header.appendChild(button2);
-        button2.setAttribute('class', 'button button2');
-        button2.textContent = 'Play against Computer';
-    }
+
 
     //gets a random number for the computers turn
     function getRandom(num) {
@@ -68,12 +70,12 @@ const ticTacToe = (function () {
         }
     }
 
-    // get the players name by using prompt
+    // get the players name by using prompt or if they dont want to give a name make the name Player 1
     function getPlayer1Name() {
         if (!player1Name) {
             player1Name = prompt('whats player1\'s name');
         }
-        if (player1Name === null) {
+        if (player1Name === null || player1Name.length === 0) {
             player1Name = 'Player 1';
         }
         addName(player1, player1Span, player1Name);
@@ -100,24 +102,23 @@ const ticTacToe = (function () {
             player1Active = true;
         }
     }
-
-    //if the game has been played reset all the values
-    function resetSquares() {
-        player1Score = 0;
-        player2Score = 0;
-        squaresFilled = 0;
-        player1Active = true;
-        addClass(player1, 'active');
-        removeClass(player2, 'active');
-        win = false;
-        remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-        randomNum = 10;
-        for (let i = 0; i < squares.length; i++) {
-            removeClass(squares[i], 'box-filled-1');
-            removeClass(squares[i], 'box-filled-2');
-        }
+    //creates button
+    function createButton(button, buttonClass, text) {
+        button.setAttribute('class', buttonClass);
+        button.setAttribute('href', '#');
+        button.textContent = text;
     }
-
+    //creates the radio buttons to select the levels
+    function createRadioButtons(radio, label, level, text){
+        createButton(buttonLevel, 'button', 'Go');
+        radio.type = 'radio';
+        radio.setAttribute('class', 'radio');
+        radio.setAttribute('name', 'level');
+        radio.id = 'level';
+        radio.value = level;
+        label.setAttribute('for', 'level');
+        label.textContent = text;
+    }
     //create the start and end screens
     function createScreen() {
         div.className = 'screen screen-win ';
@@ -130,20 +131,20 @@ const ticTacToe = (function () {
         header.appendChild(h1);
         header.appendChild(p);
         header.appendChild(button);
-    }
-    function createRadioButtons(level, text){
-        const radio = document.createElement('INPUT');
-        const label = document.createElement('label');
-        radio.type = 'radio';
-        radio.setAttribute('class', 'radio');
-        radio.setAttribute('name', 'level');
-        radio.id = 'level';
-        radio.value = level;
-        label.setAttribute('for', 'level');
-        label.textContent = text;
+        header.appendChild(button2);
+        createButton(button2, 'button button2', 'Play against Computer');
+        createRadioButtons(radio1, label1, 'easy', 'Easy');
+        createRadioButtons(radio2, label2, 'medium', 'Medium');
+        createRadioButtons(radio3, label3, 'impossible', 'Impossible');
         header.appendChild(form);
-        form.appendChild(label);
-        form.appendChild(radio);
+        form.style.visibility = 'hidden';
+        form.appendChild(label1);
+        form.appendChild(radio1);
+        form.appendChild(label2);
+        form.appendChild(radio2);
+        form.appendChild(label3);
+        form.appendChild(radio3);
+        form.appendChild(buttonLevel);
     }
 
     //add the names span to the boxes at top of screen
@@ -162,7 +163,7 @@ const ticTacToe = (function () {
         if (!player2Name || player2Name === 'Super Computer') {
             player2Name = prompt('whats player2\'s name');
         }
-        if (player2Name === null) {
+        if (player2Name === null || player2Name.length === 0) {
             player2Name = 'Player 2';
         }
         addName(player2, player2Span, player2Name);
@@ -190,42 +191,62 @@ const ticTacToe = (function () {
         for(let i = 0; i < levels.length; i++){
             if(levels[i].checked)
             {
+                console.log(levels[i].value)
                 return levels[i].value;
             }
         }
     }
-    //function to start the game showing screen and button to click to start
-    const startGame = (gameLevel) => {
-        createScreen();
-        p.remove();
-        div.className += ' screen-start';
-        div.setAttribute('id', 'start');
-        button.textContent = 'Play against opponent';
-        createButton2();
-        createRadioButtons('easy', 'Easy');
-        createRadioButtons('medium', 'Medium');
-        createRadioButtons('impossible', 'Impossible');
+    //if the game has been played reset all the values
+    function resetSquares() {
+        player1Score = 0;
+        player2Score = 0;
+        squaresFilled = 0;
+        player1Active = true;
+        addClass(player1, 'active');
+        removeClass(player2, 'active');
+        win = false;
+        remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        randomNum = 10;
+        for (let i = 0; i < squares.length; i++) {
+            removeClass(squares[i], 'box-filled-1');
+            removeClass(squares[i], 'box-filled-2');
+        }
+    }
+    function chooseOpponent(){
         //when play game against opponent is clicked
-
-        form.addEventListener('click', () => {
-            gameLevel = getRadioCheckedValue();
-            console.log(gameLevel);
-        });
         button.addEventListener('click', () => {
             playAgain();
         });
-        //when play game against computer is clicked
+        //when play game against computer is clicked show the choose level options
         button2.addEventListener('click', () => {
+            form.style.visibility = 'visible';
+            //playAgainComputer(gameLevel);
+        });
+        //get level of game when radio is clicked
+        form.addEventListener('click', () => {
+            gameLevel = getRadioCheckedValue();
+            console.log(gameLevel)
+        });
+        //choose a level and click go to play game
+        buttonLevel.addEventListener('click', () => {
             playAgainComputer();
         });
-
+    }
+    //function to start the game showing screen and button to click to start
+    const startGame = () => {
+        createScreen();
+        p.remove();
+        div.className = 'screen screen-start';
+        div.setAttribute('id', 'start');
+        button.textContent = 'Play against opponent';
+        chooseOpponent()
     };
     //function at end of the game showing screen and button to click to start again
     const endGame = (screenClass, text) => {
         resetSquares();
         createScreen();
         boardScreen.style.display = 'none';
-        createButton2();
+
         div.className += screenClass;
         div.setAttribute('id', 'finish');
         //change the text of the buttons after the game
@@ -237,28 +258,68 @@ const ticTacToe = (function () {
             button2.textContent = 'try beat the computer';
         }
         p.textContent = text;
-        //when play game against opponent is clicked
-        button.addEventListener('click', () => {
-            playAgain();
-        });
-        //when play game against computer is clicked
-        button2.addEventListener('click', () => {
-            playAgainComputer();
-        });
+        chooseOpponent()
     };
     //these are the possible win scores for each box across, down and diagonal
     //delete a few of these values if you want to make the game a bit easier
-    let boxWin0 = [];
-    let boxWin1 = [];
-    let boxWin2 = [];
-    let boxWin3 = [];
-    let boxWin4 = [];
-    let boxWin5 = [];
-    let boxWin6 = [];
-    let boxWin7 = [];
-    let boxWin8 = [];
     console.log(gameLevel);
-    if(gameLevel !== 'easy'){
+    //if game is easy there are no win scores so random numbers will always be selected
+    //if game is medium there some possible win scores removed from array
+    //if game is impossible there are no possibilities to win. computer is too clever
+        let boxWin0 = [];
+        let boxWin1 = [];
+        let boxWin2 = [];
+        let boxWin3 = [];
+        let boxWin4 = [];
+        let boxWin5 = [];
+        let boxWin6 = [];
+        let boxWin7 = [];
+        let boxWin8 = [];
+
+    if(gameLevel === 'medium'){
+        //get 2 random values
+        let boxOption1 = getRandom(9);
+        let boxOption2 = getRandom(9);
+        let boxValue1 = getRandom(2);
+        let boxValue2 = getRandom(2);
+
+
+        console.log(boxOption1)
+        console.log(boxOption2)
+            let boxWinOptions = [
+                [6, 72, 272],
+                [144, 5],
+                [3, 80, 288],
+                [65, 48],
+                [257, 68, 40, 130],
+                [24, 260],
+                [9, 20, 384],
+                [18, 320],
+                [36, 17, 192]
+            ];
+            boxWinOptions[boxOption1].splice(1, boxValue1);
+            boxWinOptions[boxOption2].splice(1, boxValue2);
+            console.log(boxWinOptions[boxOption1])
+        console.log(boxWinOptions[boxOption2])
+
+            //console.log(boxWinOptions[boxOption1][1]);  //to delete the numbers
+            //console.log(boxWinOptions[boxOption2][1]);  //to delete the numbers
+
+            boxWin0 = boxWinOptions[0];
+            boxWin1 = boxWinOptions[1];
+            boxWin2 = boxWinOptions[2];
+            boxWin3 = boxWinOptions[3];
+            boxWin4 = boxWinOptions[4];
+            boxWin5 = boxWinOptions[5];
+            boxWin6 = boxWinOptions[6];
+            boxWin7 = boxWinOptions[7];
+            boxWin8 = boxWinOptions[8];
+
+
+            //remove their values or some of their values
+
+
+    }else if(gameLevel === 'impossible'){
         boxWin0 = [6, 72, 272];
         boxWin1 = [144, 5];
         boxWin2 = [3, 80, 288];
