@@ -40,11 +40,16 @@ const ticTacToe = (function () {
     let player2Name;
     let gameLevel;
     //these are the possible win scores for each box across, down and diagonal
+    //these have been calculated by making each square equal to the power of 2
     // values for each box
     // |  1 |   2 |   4 |
     // |  8 |  16 |  32 |
     // | 64 | 128 | 256 |
     let squaresValue = [1, 2, 4, 8, 16, 32, 64, 128, 256];
+    //these are the possible win options for each square
+    //the first square can be won by occupying the 2 squares across with a value of 2 and 4 = 6
+    //or by down occupying the square with value of 8 and 64 = 72
+    //or diagonal occupying the square with value of 256 and 16 = 272
     let boxWinOptions = [
         [6, 72, 272],
         [144, 5],
@@ -204,9 +209,9 @@ const ticTacToe = (function () {
         computerPlay = true;
         player2Name = 'Super Computer';
         addName(player2, player2Span, player2Name);
-        boxClaimed = false;
         gameLevels();
         computersTurn(); //if playing against the computer then call computers turn
+        //turn('active');
         player1Active = true;
     }
 
@@ -222,7 +227,6 @@ const ticTacToe = (function () {
         let levels = document.getElementsByName('level');
         for (let i = 0; i < levels.length; i++) {
             if (levels[i].checked) {
-                console.log(levels[i].value)
                 return levels[i].value;
             }
         }
@@ -233,22 +237,14 @@ const ticTacToe = (function () {
         player1Score = 0;
         player2Score = 0;
         squaresFilled = 0;
-        player1Active = true;
-        addClass(player1, 'active');
-        removeClass(player2, 'active');
+        //player1Active = true;
+        //addClass(player1, 'active');
+        //removeClass(player2, 'active');
         win = false;
         remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         randomNum = 10;
         boxWinOptions = [
-            [6, 72, 272],
-            [144, 5],
-            [3, 80, 288],
-            [65, 48],
-            [257, 68, 40, 130],
-            [24, 260],
-            [9, 20, 384],
-            [18, 320],
-            [36, 17, 192]
+            [6, 72, 272], [144, 5], [3, 80, 288], [65, 48], [257, 68, 40, 130], [24, 260], [9, 20, 384], [18, 320], [36, 17, 192]
         ];
 
         for (let i = 0; i < squares.length; i++) {
@@ -321,19 +317,14 @@ const ticTacToe = (function () {
             //always choose a random number
             for (let i = 0; i < boxWins.length; i++) {
                 boxWins[i] = [];
-                console.log(boxWins[i])
             }
-            console.log('easy');
         }
         else if (gameLevel === 'medium') {
             //to make the level medium empty two of the possible win boxes
             for (let i = 0; i < boxWins.length; i++) {
                 boxWins[i] = boxWinOptions[i];
                 calculateMediumLevel();
-                console.log(boxWins[i]);
             }
-            console.log('medium');
-
         } else if (gameLevel === 'difficult') {
             //to make it difficult empty one value from 4 boxes
             //the random number may repeat itself which will make it more difficult
@@ -341,17 +332,13 @@ const ticTacToe = (function () {
             for (let i = 0; i < boxWins.length; i++) {
                 boxWins[i] = boxWinOptions[i];
                 calculateDifficultLevel();
-                console.log(boxWins[i]);
             }
-            console.log('difficult');
         }
         else if (gameLevel === 'impossible') {
             //if its impossible make the box wins equal to the array with all possible win values
             for (let i = 0; i < boxWins.length; i++) {
                 boxWins[i] = boxWinOptions[i];
-                console.log(boxWins[i]);
             }
-            console.log('impossible');
         }
     }
 
@@ -367,6 +354,7 @@ const ticTacToe = (function () {
         player2Score += squares[box].value;
         removeSquare(box);
         checkIfWinner();
+        turn('active');
     }
 
     //check to see if the computer can win or defend
@@ -375,7 +363,6 @@ const ticTacToe = (function () {
         for (let i = 0; i < squares.length; i++) {
             if ((boxWinArray[i] & player) === boxWinArray[i]) {
                 claimSquare(box);
-                console.log('he defended')
             }
         }
     }
@@ -406,7 +393,7 @@ const ticTacToe = (function () {
             }
         }
         //turn over - change to player1
-        turn('active');
+        //turn('active');
     };
 
     //check to see if square is empty and if it is fill it
