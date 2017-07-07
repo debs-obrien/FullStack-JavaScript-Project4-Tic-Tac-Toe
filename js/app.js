@@ -9,24 +9,24 @@ const ticTacToe = (function () {
     const squares = document.getElementsByClassName("box");
     const boardScreen = document.getElementById('board');
     const wins = [7, 56, 448, 73, 146, 292, 273, 84];
-    const div = document.createElement('DIV');
-    const header = document.createElement('HEADER');
-    const h1 = document.createElement('H1');
-    const button = document.createElement('A');
-    const button2 = document.createElement('A');
-    const buttonLevel = document.createElement('A');
-    const p = document.createElement('P');
-    const form = document.createElement('FORM');
-    const radio1 = document.createElement('INPUT');
-    const label1 = document.createElement('LABEL');
-    const radio2 = document.createElement('INPUT');
-    const label2 = document.createElement('LABEL');
-    const radio3 = document.createElement('INPUT');
-    const label3 = document.createElement('LABEL');
-    const radio4 = document.createElement('INPUT');
-    const label4 = document.createElement('LABEL');
-    const player1Span = document.createElement('SPAN');
-    const player2Span = document.createElement('SPAN');
+    const div = document.createElement('div');
+    const header = document.createElement('header');
+    const h1 = document.createElement('h1');
+    const button = document.createElement('a');
+    const button2 = document.createElement('a');
+    const buttonLevel = document.createElement('button');
+    const p = document.createElement('p');
+    const form = document.createElement('form');
+    const radio1 = document.createElement('input');
+    const label1 = document.createElement('label');
+    const radio2 = document.createElement('input');
+    const label2 = document.createElement('label');
+    const radio3 = document.createElement('input');
+    const label3 = document.createElement('label');
+    const radio4 = document.createElement('input');
+    const label4 = document.createElement('label');
+    const player1Span = document.createElement('span');
+    const player2Span = document.createElement('span');
     let player1Score = 0;
     let player2Score = 0;
     let squaresFilled = 0;
@@ -38,7 +38,7 @@ const ticTacToe = (function () {
     let randomNum;
     let player1Name;
     let player2Name;
-    let gameLevel = 'difficult';
+    let gameLevel;
     //these are the possible win scores for each box across, down and diagonal
     // values for each box
     // |  1 |   2 |   4 |
@@ -123,7 +123,10 @@ const ticTacToe = (function () {
     }
 
     //creates button
-    function createButton(button, buttonClass, text) {
+    function createButton(button, buttonClass, text, type = null) {
+        if (type !== null) {
+            button.setAttribute('type', type);
+        }
         button.setAttribute('class', buttonClass);
         button.setAttribute('href', '#');
         button.textContent = text;
@@ -131,7 +134,7 @@ const ticTacToe = (function () {
 
     //creates the radio buttons to select the levels
     function createRadioButtons(radio, label, level, text) {
-        createButton(buttonLevel, 'button', 'Go');
+        createButton(buttonLevel, 'button', 'Go', 'submit');
         radio.type = 'radio';
         radio.setAttribute('class', 'radio');
         radio.setAttribute('name', 'level');
@@ -198,10 +201,13 @@ const ticTacToe = (function () {
     function playAgainComputer() {
         setScreen();
         getPlayer1Name();
-        player1Active = true;
         computerPlay = true;
         player2Name = 'Super Computer';
         addName(player2, player2Span, player2Name);
+        boxClaimed = false;
+        gameLevels();
+        computersTurn(); //if playing against the computer then call computers turn
+        player1Active = true;
     }
 
     //if you click on the square to claim it
@@ -262,12 +268,9 @@ const ticTacToe = (function () {
             //playAgainComputer(gameLevel);
         });
         //get level of game when radio is clicked
-        form.addEventListener('click', () => {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
             gameLevel = getRadioCheckedValue();
-            console.log(gameLevel)
-        });
-        //choose a level and click go to play game
-        buttonLevel.addEventListener('click', () => {
             playAgainComputer();
         });
     }
@@ -307,10 +310,10 @@ const ticTacToe = (function () {
     }
 
     function calculateDifficultLevel() {
-        boxWinOptions[getRandom(9)].splice(1, getRandom(2));
+        boxWinOptions[getRandom(9)].splice(getRandom(2), 1);
+        boxWinOptions[getRandom(9)].splice(getRandom(2), 1);
     }
 
-    console.log('the game level is' + gameLevel);
     function gameLevels() {
         if (gameLevel === 'easy') {
             //if level easy is set make the possible wins equal to an empty array then
@@ -352,7 +355,6 @@ const ticTacToe = (function () {
         }
     }
 
-
     //start by letting the boxClaimed to false as the computer hasnt claimed a box yet
     let boxClaimed = false;
     //this will help the computer win or defend
@@ -368,7 +370,7 @@ const ticTacToe = (function () {
     }
 
     //check to see if the computer can win or defend
-    function WinOrDefend(boxWinArray, box, player) {
+    function winOrDefend(boxWinArray, box, player) {
 
         for (let i = 0; i < squares.length; i++) {
             if ((boxWinArray[i] & player) === boxWinArray[i]) {
@@ -386,8 +388,8 @@ const ticTacToe = (function () {
             for (let i = 0; i < boxWins.length; i++) {
                 if (!boxClaimed && remainingSquares.includes(i)) {
 
-                    WinOrDefend(boxWins[i], i, player2Score); //check to see if he can win
-                    WinOrDefend(boxWins[i], i, player1Score); //check if he needs to defend
+                    winOrDefend(boxWins[i], i, player2Score); //check to see if he can win
+                    winOrDefend(boxWins[i], i, player1Score); //check if he needs to defend
                 }
             }
             //so the computer couldnt win or didnt need to defend so just go random
@@ -428,6 +430,7 @@ const ticTacToe = (function () {
                     //if playing against the computer call the computers turn
                     if (computerPlay) {
                         boxClaimed = false;
+                        gameLevels();
                         computersTurn(); //if playing against the computer then call computers turn
                     }
                     //if playing against player 2 let player 2 click and claim square
@@ -454,7 +457,6 @@ const ticTacToe = (function () {
             e.target.style.backgroundImage = "";
         });
     };
-
 
     //check if wins array includes playersScore
     //the & operator Performs the AND operation on each pair of bits
@@ -483,7 +485,6 @@ const ticTacToe = (function () {
     startGame();
     gameLevels();
     isSquareEmpty();
-
 
 }()); //end of main function
 

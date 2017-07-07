@@ -35,8 +35,18 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4443">
-              <caret line="482" column="16" lean-forward="true" selection-start-line="482" selection-start-column="16" selection-end-line="482" selection-end-column="16" />
+            <state relative-caret-position="477">
+              <caret line="218" column="5" lean-forward="true" selection-start-line="218" selection-start-column="5" selection-end-line="218" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/FullStack-JavaScript-Project4-Tic-Tac-Toe-master/js/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="203">
+              <caret line="264" column="24" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="493" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -106,11 +116,13 @@
     <findStrings>
       <find>click</find>
       <find>name</find>
-      <find>reset</find>
       <find>player1Name</find>
       <find>active</find>
       <find>none</find>
       <find>calculateDifficultLevel</find>
+      <find>reset</find>
+      <find>computer</find>
+      <find>computersTurn</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -142,9 +154,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="722" />
+    <option name="x" value="764" />
     <option name="y" value="23" />
-    <option name="width" value="1188" />
+    <option name="width" value="993" />
     <option name="height" value="981" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
@@ -372,15 +384,15 @@
       <updated>1463404933508</updated>
       <workItem from="1463404941765" duration="102000" />
       <workItem from="1498910743784" duration="17896000" />
-      <workItem from="1499408797870" duration="17275000" />
+      <workItem from="1499408797870" duration="21280000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114712000" />
+    <option name="totallyTimeSpent" value="118717000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="722" y="23" width="1188" height="981" extended-state="0" />
+    <frame x="764" y="23" width="993" height="981" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20994002" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -412,11 +424,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/mockups/tictactoe-01-start.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mockups/tictactoe-03-winner1.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -750,10 +757,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Downloads/FullStack-JavaScript-Project4-Tic-Tac-Toe-master/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="264" column="24" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="493" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4443">
-          <caret line="482" column="16" lean-forward="true" selection-start-line="482" selection-start-column="16" selection-end-line="482" selection-end-column="16" />
+        <state relative-caret-position="477">
+          <caret line="218" column="5" lean-forward="true" selection-start-line="218" selection-start-column="5" selection-end-line="218" selection-end-column="5" />
           <folding />
         </state>
       </provider>
