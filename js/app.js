@@ -32,7 +32,6 @@ const ticTacToe = (function () {
     let squaresFilled = 0;
     let win = false;
     let remainingSquares = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-    let squaresValue = [1, 2, 4, 8, 16, 32, 64, 128, 256];
     let player1Active = true;
     let player2Play = false;
     let computerPlay = false;
@@ -41,6 +40,7 @@ const ticTacToe = (function () {
     let player2Name;
     let gameLevel = 'difficult';
     //these are the possible win scores for each box across, down and diagonal
+    let squaresValue = [1, 2, 4, 8, 16, 32, 64, 128, 256];
     let boxWinOptions = [
         [6, 72, 272],
         [144, 5],
@@ -52,6 +52,11 @@ const ticTacToe = (function () {
         [18, 320],
         [36, 17, 192]
     ];
+    // values for each box
+    // |  1 |   2 |   4 |
+    // |  8 |  16 |  32 |
+    // | 64 | 128 | 256 |
+    
     let boxWins = ['boxWin1', 'boxWin1', 'boxWin2', 'boxWin3', 'boxWin4', 'boxWin5', 'boxWin6', 'boxWin7', 'boxWin8'];
 
 
