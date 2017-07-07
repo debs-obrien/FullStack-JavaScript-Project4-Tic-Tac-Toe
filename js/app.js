@@ -40,6 +40,10 @@ const ticTacToe = (function () {
     let player2Name;
     let gameLevel = 'difficult';
     //these are the possible win scores for each box across, down and diagonal
+    // values for each box
+    // |  1 |   2 |   4 |
+    // |  8 |  16 |  32 |
+    // | 64 | 128 | 256 |
     let squaresValue = [1, 2, 4, 8, 16, 32, 64, 128, 256];
     let boxWinOptions = [
         [6, 72, 272],
@@ -52,13 +56,8 @@ const ticTacToe = (function () {
         [18, 320],
         [36, 17, 192]
     ];
-    // values for each box
-    // |  1 |   2 |   4 |
-    // |  8 |  16 |  32 |
-    // | 64 | 128 | 256 |
-    
-    let boxWins = ['boxWin1', 'boxWin1', 'boxWin2', 'boxWin3', 'boxWin4', 'boxWin5', 'boxWin6', 'boxWin7', 'boxWin8'];
 
+    let boxWins = ['boxWin1', 'boxWin1', 'boxWin2', 'boxWin3', 'boxWin4', 'boxWin5', 'boxWin6', 'boxWin7', 'boxWin8'];
 
     //gets a random number for the computers turn
     function getRandom(num) {
