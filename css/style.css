@@ -158,6 +158,10 @@ form label{
 #level{
   margin-right:30px;
 }
+button[type="submit"]{
+  border: none;
+}
+
 
 
 
