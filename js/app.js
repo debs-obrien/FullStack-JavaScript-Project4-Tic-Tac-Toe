@@ -55,7 +55,6 @@ const ticTacToe = (function () {
     let boxWins = ['boxWin1', 'boxWin1', 'boxWin2', 'boxWin3', 'boxWin4', 'boxWin5', 'boxWin6', 'boxWin7', 'boxWin8'];
 
 
-
     //gets a random number for the computers turn
     function getRandom(num) {
         return Math.floor(Math.random() * num);
@@ -101,6 +100,7 @@ const ticTacToe = (function () {
         div.remove();
         boardScreen.style.display = 'block';
         resetSquares();
+        gameLevels();
         addClass(player1, 'active');
         removeClass(player2, 'active');
     }
@@ -117,14 +117,16 @@ const ticTacToe = (function () {
             player1Active = true;
         }
     }
+
     //creates button
     function createButton(button, buttonClass, text) {
         button.setAttribute('class', buttonClass);
         button.setAttribute('href', '#');
         button.textContent = text;
     }
+
     //creates the radio buttons to select the levels
-    function createRadioButtons(radio, label, level, text){
+    function createRadioButtons(radio, label, level, text) {
         createButton(buttonLevel, 'button', 'Go');
         radio.type = 'radio';
         radio.setAttribute('class', 'radio');
@@ -134,6 +136,7 @@ const ticTacToe = (function () {
         label.setAttribute('for', 'level');
         label.textContent = text;
     }
+
     //create the start and end screens
     function createScreen() {
         div.className = 'screen screen-win ';
@@ -160,6 +163,8 @@ const ticTacToe = (function () {
         form.appendChild(radio2);
         form.appendChild(label3);
         form.appendChild(radio3);
+        form.appendChild(label4);
+        form.appendChild(radio4);
         form.appendChild(buttonLevel);
     }
 
@@ -202,16 +207,17 @@ const ticTacToe = (function () {
         squaresFilled += 1;
         turn('active');
     }
-    function getRadioCheckedValue(){
+
+    function getRadioCheckedValue() {
         let levels = document.getElementsByName('level');
-        for(let i = 0; i < levels.length; i++){
-            if(levels[i].checked)
-            {
+        for (let i = 0; i < levels.length; i++) {
+            if (levels[i].checked) {
                 console.log(levels[i].value)
                 return levels[i].value;
             }
         }
     }
+
     //if the game has been played reset all the values
     function resetSquares() {
         player1Score = 0;
@@ -240,7 +246,8 @@ const ticTacToe = (function () {
             removeClass(squares[i], 'box-filled-2');
         }
     }
-    function chooseOpponent(){
+
+    function chooseOpponent() {
         //when play game against opponent is clicked
         button.addEventListener('click', () => {
             playAgain();
@@ -260,6 +267,7 @@ const ticTacToe = (function () {
             playAgainComputer();
         });
     }
+
     //function to start the game showing screen and button to click to start
     const startGame = () => {
         createScreen();
@@ -288,56 +296,56 @@ const ticTacToe = (function () {
         p.textContent = text;
         chooseOpponent()
     };
-    function calculateMediumLevel(){
-        boxWins[getRandom(9)]=[];
-        boxWins[getRandom(9)]=[];
+
+    function calculateMediumLevel() {
+        boxWins[getRandom(9)] = [];
+        boxWins[getRandom(9)] = [];
     }
-    function calculateDifficultLevel(){
+
+    function calculateDifficultLevel() {
         boxWinOptions[getRandom(9)].splice(1, getRandom(2));
     }
 
     console.log('the game level is' + gameLevel);
-
-    if(gameLevel === 'easy'){
-        //if level easy is set make the possible wins equal to an empty array then
-        //when computer plays there will be no defend or win options so he will
-        //always choose a random number
-        for(let i = 0; i < boxWins.length; i++){
-            boxWins[i] = [];
-
-            console.log(boxWins[i])
+    function gameLevels() {
+        if (gameLevel === 'easy') {
+            //if level easy is set make the possible wins equal to an empty array then
+            //when computer plays there will be no defend or win options so he will
+            //always choose a random number
+            for (let i = 0; i < boxWins.length; i++) {
+                boxWins[i] = [];
+                console.log(boxWins[i])
+            }
+            console.log('easy');
         }
-        console.log('easy');
-    }
-    else if(gameLevel === 'medium'){
-        //to make the level medium empty two of the possible win boxes
-        for(let i = 0; i < boxWins.length; i++){
-            boxWins[i] = boxWinOptions[i];
+        else if (gameLevel === 'medium') {
+            //to make the level medium empty two of the possible win boxes
+            for (let i = 0; i < boxWins.length; i++) {
+                boxWins[i] = boxWinOptions[i];
+                calculateMediumLevel();
+                console.log(boxWins[i]);
+            }
+            console.log('medium');
 
-            calculateMediumLevel();
-            console.log(boxWins[i]);
+        } else if (gameLevel === 'difficult') {
+            //to make it difficult empty one value from 4 boxes
+            //the random number may repeat itself which will make it more difficult
+
+            for (let i = 0; i < boxWins.length; i++) {
+                boxWins[i] = boxWinOptions[i];
+                calculateDifficultLevel();
+                console.log(boxWins[i]);
+            }
+            console.log('difficult');
         }
-        console.log('medium');
-
-    }else if(gameLevel === 'difficult'){
-        //to make it difficult empty one value from 4 boxes
-        //the random number may repeat itself which will make it more difficult
-
-        for(let i = 0; i < boxWins.length; i++){
-            boxWins[i] = boxWinOptions[i];
-            calculateDifficultLevel();
-            console.log(boxWins[i]);
+        else if (gameLevel === 'impossible') {
+            //if its impossible make the box wins equal to the array with all possible win values
+            for (let i = 0; i < boxWins.length; i++) {
+                boxWins[i] = boxWinOptions[i];
+                console.log(boxWins[i]);
+            }
+            console.log('impossible');
         }
-        console.log('difficult');
-    }
-    else if(gameLevel === 'impossible'){
-        //if its impossible make the box wins equal to the array with all possible win values
-        for(let i = 0; i < boxWins.length; i++){
-            boxWins[i] = boxWinOptions[i];
-
-            console.log(boxWins[i]);
-        }
-        console.log('impossible');
     }
 
 
@@ -345,7 +353,7 @@ const ticTacToe = (function () {
     let boxClaimed = false;
     //this will help the computer win or defend
     //when computer claims a square do this
-    function claimSquare(box){
+    function claimSquare(box) {
         boxClaimed = true;
         addClass(squares[box], 'box-filled-2');
         calculateScore();
@@ -354,6 +362,7 @@ const ticTacToe = (function () {
         removeSquare(box);
         checkIfWinner();
     }
+
     //check to see if the computer can win or defend
     function WinOrDefend(boxWinArray, box, player) {
 
@@ -370,7 +379,7 @@ const ticTacToe = (function () {
     const computersTurn = () => {
         while (!boxClaimed) {
 
-            for(let i = 0; i < boxWins.length; i++){
+            for (let i = 0; i < boxWins.length; i++) {
                 if (!boxClaimed && remainingSquares.includes(i)) {
 
                     WinOrDefend(boxWins[i], i, player2Score); //check to see if he can win
@@ -468,6 +477,7 @@ const ticTacToe = (function () {
 
     boardScreen.style.display = 'none';
     startGame();
+    gameLevels();
     isSquareEmpty();
 
 
